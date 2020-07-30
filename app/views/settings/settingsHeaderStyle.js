@@ -19,7 +19,7 @@ export default StyleSheet.create({
     paddingLeft: 10,
   },
   headerTextContainer: {
-    flex: 3,
+    flex: 2,
     paddingLeft: 20,
   },
   headerText: {
