@@ -12,6 +12,7 @@ import DatePickerView from '../../views/DatePickerView/DatePickerView';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import Container from '../Container';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import BackHeader from '../Header/BackHeader';
 
 class RegisterAvailabilityForm extends React.Component {
   constructor(props) {
@@ -259,6 +260,10 @@ class RegisterAvailabilityForm extends React.Component {
     }
   };
 
+  handleBack = () => {
+    const { navigation } = this.props;
+    navigation.navigate('AgendaView');
+  };
   render() {
     let {
       startDate,
@@ -269,24 +274,19 @@ class RegisterAvailabilityForm extends React.Component {
     } = this.state.availData;
     const { navigation } = this.props;
     console.log('render', this.state.availData);
+
     return (
       <Container>
         <View style={styles.mainContainer}>
-          <View style={styles.componentsContainer}>
-            <View style={styles.backButtonContainer}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('AgendaView')}
-              >
-                <Icon name="chevron-left" size={36} color="#ffffff" />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.headerText}>
-                {navigation.state.params.new ? 'Add' : 'Edit'} Availability
-              </Text>
-            </View>
-          </View>
+          <BackHeader
+            onPress={this.handleBack}
+            title={
+              navigation.state.params.new
+                ? 'Add Availability'
+                : 'Edit Availability'
+            }
+            disable={false}
+          />
         </View>
         <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false}>
           <View onStartShouldSetResponder={() => true}>

@@ -19,9 +19,8 @@ import styles from './styles';
 import moment from 'moment';
 import variables from '../../utils/variables';
 import API from '../../api/api';
-type Props = {};
 
-export default class MainView extends Component<Props> {
+export default class MainView extends Component {
   scrollX = new Animated.Value(0);
   constructor(props) {
     super(props);
@@ -102,6 +101,9 @@ export default class MainView extends Component<Props> {
         if (application_state === 'accepted' && background_check) {
           API.getRides(token).then(result => {
             console.log('all rides: ', result.rides);
+
+            //if undefined don't do this...
+
             const rides = result.rides;
 
             //grab all rides and sort by date then check for scheduled and approved rides and sort / save seperately
@@ -554,7 +556,7 @@ export default class MainView extends Component<Props> {
       <View style={styles.container}>
         <NavigationEvents onDidFocus={() => this.handleToken()} />
         <StatusBar barStyle="light-content" backgroundColor="#1EAA70" />
-        <Header onPress={this.navigateToSettings} />
+        <Header onPress={this.navigateToSettings} title={'Welcome'} />
         {isLoading ? (
           this.renderLoader()
         ) : (

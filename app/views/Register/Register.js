@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Keyboard } from 'react-native';
 import Container from '../../components/Container';
-import RegisterHeader from './RegisterHeader';
+import BackHeader from '../../components/Header/BackHeader';
 import { RegisterDriverForm } from '../../components/Forms';
 
 class Register extends Component {
@@ -21,7 +21,11 @@ class Register extends Component {
 
     return (
       <Container>
-        <RegisterHeader onPress={this.handleBackButton} title={'Driver Info'} />
+        <BackHeader
+          onPress={this.handleBackButton}
+          title={'Driver Info'}
+          disable={false}
+        />
 
         <RegisterDriverForm subTitle={subTitle} navigation={navigation} />
       </Container>

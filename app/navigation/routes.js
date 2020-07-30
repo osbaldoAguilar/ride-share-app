@@ -44,23 +44,20 @@ const MainViewStack = createStackNavigator(
     RegisterAvailability: {
       screen: RegisterAvailability,
       navigationOptions: {
-        headerTransparent: true,
-        headerTintColor: '#C5CCD6',
-        headerLeft: null,
-        gesturesEnabled: false,
+        header: () => null,
       },
     },
     Settings: {
       screen: Settings,
+      navigationOptions: {
+        header: () => null,
+      },
     },
     RideView: {
       screen: RideView,
       navigationOptions: {
-        headerTitle: 'Ride Overview',
-        headerStyle: {
-          backgroundColor: '#1EAA70',
-        },
-        headerTintColor: '#fff',
+        header: () => null,
+        gesturesEnabled: false,
       },
     },
     DriverScheduleView: {
@@ -76,27 +73,19 @@ const MainViewStack = createStackNavigator(
     RequestedRidesDetails: {
       screen: RequestedRidesDetails,
       navigationOptions: {
-        headerTitle: 'Requested Ride Details',
-        headerStyle: {
-          backgroundColor: '#1EAA70',
-        },
-        headerTintColor: '#fff',
+        header: () => null,
       },
     },
     RegisterVehicle: {
       screen: RegisterVehicle,
       navigationOptions: {
-        headerTransparent: true,
-        headerTintColor: '#C5CCD6',
-        headerLeft: null,
+        header: () => null,
       },
     },
     LocationScreen: {
       screen: LocationForm,
       navigationOptions: {
-        headerTransparent: true,
-        headerTintColor: '#C5CCD6',
-        headerLeft: null,
+        header: () => null,
       },
     },
   },

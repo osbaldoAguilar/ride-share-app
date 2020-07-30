@@ -254,7 +254,7 @@ class RegisterDriverForm extends React.Component {
                 textStyle={[styles.sectionTitle, { color: '#475c67' }]}
                 dropdownStyle={styles.dropdownStyle}
                 dropdownTextStyle={styles.dropdownTextStyle}
-                style={styles.modalStyle}
+               
               />
             </View>
             <View>
@@ -272,7 +272,7 @@ class RegisterDriverForm extends React.Component {
                 textStyle={[styles.sectionTitle, { color: '#475c67' }]}
                 dropdownStyle={styles.dropdownStyle}
                 dropdownTextStyle={styles.dropdownTextStyle}
-                style={styles.modalDropdown}
+               
               />
             </View>
             {this.state.error != '' && (
@@ -282,7 +282,9 @@ class RegisterDriverForm extends React.Component {
                 <Text style={styles.errorMessage}>{this.state.error}</Text>
               </View>
             )}
-            <View style={styles.footer}>
+            <View
+              style={[styles.footer, { paddingRight: 10, paddingLeft: 10 }]}
+            >
               <CalendarButton
                 title="Continue"
                 onPress={
