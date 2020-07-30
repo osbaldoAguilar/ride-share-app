@@ -9,6 +9,8 @@ import {
   FlatList,
   Animated,
   Alert,
+  TouchableHighlightBase,
+  RefreshControl,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationEvents } from 'react-navigation';
@@ -37,7 +39,7 @@ export default class MainView extends Component {
       hasReqRidesInAvail: false,
       showAllRides: false,
       toggleButtonText: 'Show All Requested Rides',
-      isLoading: true,
+      isLoading: false,
       isNewRegistered: isNewRegistered,
       driverApproved: false,
       token: '',
@@ -50,11 +52,12 @@ export default class MainView extends Component {
     }
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.handleToken();
     this.state.isNewRegistered ? this.newRegistrationAlert() : null;
+
     console.log('main view', this.state.isNewRegistered);
-  }
+  };
 
   handleToken = async () => {
     console.log('handle token called');
@@ -75,6 +78,7 @@ export default class MainView extends Component {
 
   ridesRequests = async () => {
     const { token } = this.state;
+    //
     this.setState({ isLoading: true });
     API.getAvailabilities(token).then(result => {
       if (result.json === undefined) {
@@ -564,6 +568,12 @@ export default class MainView extends Component {
             scrollsToTop
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: variables.sizes.padding }}
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={this.ridesRequests}
+              />
+            }
           >
             {this.state.driverApproved ? (
               <>

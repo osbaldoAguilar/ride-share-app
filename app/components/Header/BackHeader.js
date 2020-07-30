@@ -17,7 +17,7 @@ class BackHeader extends Component {
           {disable ? null : (
             <TouchableOpacity
               onPress={this.props.onPress}
-              style={{ width: 15 }}
+              style={{ width: 25 }}
             >
               <Icon name="ios-arrow-back" size={30} color="#ffffff" />
             </TouchableOpacity>
