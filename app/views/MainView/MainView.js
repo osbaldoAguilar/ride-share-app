@@ -53,6 +53,7 @@ export default class MainView extends Component {
   };
 
   componentDidMount = () => {
+    this.setState({ isLoading: true });
     this.handleToken();
     this.state.isNewRegistered ? this.newRegistrationAlert() : null;
 
@@ -79,7 +80,7 @@ export default class MainView extends Component {
   ridesRequests = async () => {
     const { token } = this.state;
     //
-    this.setState({ isLoading: true });
+
     API.getAvailabilities(token).then(result => {
       if (result.json === undefined) {
         AsyncStorage.removeItem('token');
