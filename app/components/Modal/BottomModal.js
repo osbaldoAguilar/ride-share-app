@@ -3,7 +3,7 @@ import Modal from 'react-native-modal';
 import { Text, ScrollView, View, TouchableOpacity } from 'react-native';
 
 const BottomModal = ({ isVisible, onBackPress, onSelect, data }) => {
-  console.log('visible', isVisible);
+  console.log('visible', data);
   return (
     <View>
       <View
@@ -19,7 +19,7 @@ const BottomModal = ({ isVisible, onBackPress, onSelect, data }) => {
             shadowColor: '#000',
             shadowOpacity: 0.5,
             shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 13,
+            shadowRadius: 15,
             elevation: Platform.OS === 'ios' ? 0 : 5,
             margin: 0,
             justifyContent: 'flex-end',
@@ -37,10 +37,10 @@ const BottomModal = ({ isVisible, onBackPress, onSelect, data }) => {
             }}
           >
             <ScrollView>
-              {data.map(org => {
+              {data.map((data, index) => {
                 return (
                   <TouchableOpacity
-                    onPress={() => onSelect(org)}
+                    onPress={() => onSelect(data, index)}
                     style={{ alignItems: 'center' }}
                   >
                     <Text
@@ -53,7 +53,7 @@ const BottomModal = ({ isVisible, onBackPress, onSelect, data }) => {
                         display: 'flex',
                       }}
                     >
-                      {org.name}
+                      {data}
                     </Text>
                   </TouchableOpacity>
                 );

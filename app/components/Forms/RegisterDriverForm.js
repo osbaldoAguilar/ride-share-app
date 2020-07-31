@@ -20,12 +20,15 @@ class RegisterDriverForm extends React.Component {
     super(props);
     this.state = {
       orgs: [],
+      orgsNames: [],
       orgNum: 1,
       radius: 0,
+      radiusOptions: ['10 Miles', '20 Miles', '30 Miles'],
       error: '',
       orgModal: false,
-      milesModal: false,
+      radiusModal: false,
       selectedOrg: 'Select an organization',
+      selectedRadius: 'Select a Mileage',
     };
   }
 
@@ -42,9 +45,16 @@ class RegisterDriverForm extends React.Component {
     //using API file, getOrgs function, which fetches list of orgs
     API.getOrgs()
       .then(res => {
+        console.log('orgs', res.organization);
         //store full list of all orgs in local state
+
+        //store names for modal
+        orgNames = [];
+        res.organization.map(org => orgNames.push(org.name));
+
         this.setState({
           orgs: res.organization,
+          orgsNames: orgNames,
         });
       })
       //if error performing API fetch for getting orgs, show error
@@ -142,15 +152,26 @@ class RegisterDriverForm extends React.Component {
     this.setState({ orgNum: selectedOrg.id });
   };
 
-  toggleModal = () => {
+  toggleOrgModal = () => {
     this.setState({ orgModal: !this.state.orgModal });
   };
+  toggleRadModal = () => {
+    this.setState({ radiusModal: !this.state.radiusModal });
+  };
 
-  onSelect = name => {
-    this.setState(
-      { selectedOrg: name.name, orgModal: !this.state.orgModal },
-      () => this.getOrganizationId(name.name)
+  onSelectOrg = name => {
+    this.setState({ selectedOrg: name, orgModal: !this.state.orgModal }, () =>
+      this.getOrganizationId(name)
     );
+  };
+
+  onSelectRad = (data, index) => {
+    console.log('onseect rad', index);
+    this.setState({
+      radius: (Number(index) + 1) * 10,
+      radiusModal: !this.state.radiusModal,
+      selectedRadius: data,
+    });
   };
 
   render() {
@@ -268,16 +289,16 @@ class RegisterDriverForm extends React.Component {
                 dropdownTextStyle={styles.dropdownTextStyle}
               /> */}
               <View>
-                <TouchableOpacity onPress={this.toggleModal}>
+                <TouchableOpacity onPress={this.toggleOrgModal}>
                   <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
                     {this.state.selectedOrg}
                   </Text>
                 </TouchableOpacity>
                 <BottomModal
                   isVisible={this.state.orgModal}
-                  onBackPress={this.toggleModal}
+                  onBackPress={this.toggleOrgModal}
                   onSelect={this.onSelect}
-                  data={this.state.orgs}
+                  data={this.state.orgsNames}
                 />
               </View>
             </View>
@@ -289,14 +310,27 @@ class RegisterDriverForm extends React.Component {
                   </Text>
                 </View>
               </View>
-              <ModalDropdown
+              {/* <ModalDropdown
                 defaultValue="Select a Mileage"
                 onSelect={i => this.setState({ radius: (Number(i) + 1) * 10 })}
                 options={['10 Miles', '20 Miles', '30 Miles']}
                 textStyle={[styles.sectionTitle, { color: '#475c67' }]}
                 dropdownStyle={styles.dropdownStyle}
                 dropdownTextStyle={styles.dropdownTextStyle}
-              />
+              /> */}
+              <View>
+                <TouchableOpacity onPress={this.toggleRadModal}>
+                  <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
+                    {this.state.selectedRadius}
+                  </Text>
+                </TouchableOpacity>
+                <BottomModal
+                  isVisible={this.state.radiusModal}
+                  onBackPress={this.toggleRadModal}
+                  onSelect={this.onSelectRad}
+                  data={this.state.radiusOptions}
+                />
+              </View>
             </View>
             {this.state.error != '' && (
               <View
