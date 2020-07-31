@@ -27,11 +27,14 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
           <Text style={{ fontSize: 16, color: '#475c67' }}>
             , {item.item.state}
           </Text>
-          <Text style={{ fontSize: 16, color: '#475c67' }}>
-            {' '}
-            {item.item.zip}
+          <Text
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            style={{ fontSize: 16, color: '#475c67', width: 20 }}
+          >
+            {} {item.item.zip}
           </Text>
-          <View
+          <View 
             style={{
               flexDirection: 'row',
               position: 'absolute',
@@ -57,7 +60,7 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
                 <Icon color="#ff8262" name="pencil" size={25}></Icon>
               </TouchableOpacity>
             </View>
-            <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+            <View style={{ paddingLeft: 5, paddingRight: 5 }}>
               <TouchableOpacity
                 onPress={() => handleDeleteLocation(item.item.id)}
               >

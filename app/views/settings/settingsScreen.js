@@ -263,7 +263,7 @@ class Settings extends Component {
 
   handleRadius = text => {
     this.setState({
-      zip_code: text,
+      radius: text,
     });
   };
 
