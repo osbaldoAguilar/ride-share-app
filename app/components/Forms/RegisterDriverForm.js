@@ -13,7 +13,7 @@ import { CalendarButton } from '../Button';
 import BottomModal from '../Modal/BottomModal';
 import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
-import ModalDropdown from 'react-native-modal-dropdown';
+
 
 class RegisterDriverForm extends React.Component {
   constructor(props) {

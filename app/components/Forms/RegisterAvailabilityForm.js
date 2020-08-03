@@ -1,15 +1,16 @@
 import React from 'react';
 import { Text, ScrollView, View, Button, TouchableOpacity } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import styles from './styles';
 import Block from '../Block';
 import { CalendarButton } from '../Button';
 import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
-import moment, { months } from 'moment';
+import moment from 'moment';
 import ModalDropdown from 'react-native-modal-dropdown';
 import DatePickerView from '../../views/DatePickerView/DatePickerView';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import BottomModal from '../Modal/BottomModal';
 import Container from '../Container';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BackHeader from '../Header/BackHeader';
@@ -35,11 +36,14 @@ class RegisterAvailabilityForm extends React.Component {
           ? new Date()
           : moment(params.item.endTime).format('llll'),
       },
+      locationModal: false,
       locationData: [],
       locations: [],
       selectedLocation: {},
       errors: [],
       defaultLocation: 'Select One',
+      recurringOptions: ['Yes', 'No'],
+      recurringModal: false,
     };
   }
 
@@ -125,7 +129,11 @@ class RegisterAvailabilityForm extends React.Component {
     console.log('inside location change', index);
     const { locations } = this.state;
     const selectedLocation = locations[index].id;
-    this.setState({ selectedLocation });
+    this.setState({
+      selectedLocation,
+      locationModal: false,
+      defaultLocation: location,
+    });
     console.log('id', selectedLocation);
   };
   setStartDate = date => {
@@ -168,9 +176,11 @@ class RegisterAvailabilityForm extends React.Component {
   };
 
   handleRecurringChange = value => {
+    console.log('value', value);
     if (value === 'Yes') {
-      this.setState({ is_recurring: 'true' });
-    } else this.setState({ is_recurring: 'false' });
+      console.log('inside if');
+      this.setState({ isRecurring: true, recurringModal: false });
+    } else this.setState({ isRecurring: false, recurringModal: false });
   };
 
   convertToUTC = async (date, time) => {
@@ -260,6 +270,13 @@ class RegisterAvailabilityForm extends React.Component {
     }
   };
 
+  toggleRecModal = () => {
+    this.setState({ recurringModal: !this.state.recurringModal });
+  };
+
+  toggleLocationModal = () => {
+    this.setState({ locationModal: !this.state.locationModal });
+  };
   handleBack = () => {
     const { navigation } = this.props;
     navigation.navigate('AgendaView');
@@ -273,7 +290,7 @@ class RegisterAvailabilityForm extends React.Component {
       locationData,
     } = this.state.availData;
     const { navigation } = this.props;
-    console.log('render', this.state.availData);
+    console.log('recrruning', this.state.isRecurring);
 
     return (
       <Container>
@@ -346,7 +363,12 @@ class RegisterAvailabilityForm extends React.Component {
             <Text style={styles.labelStyleAvail}>
               Is this a weekly recurring?{' '}
             </Text>
-            <ModalDropdown
+            <TouchableOpacity onPress={this.toggleRecModal}>
+              <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
+                {this.state.isRecurring ? 'Yes' : 'No'}
+              </Text>
+            </TouchableOpacity>
+            {/* <ModalDropdown
               defaultValue={this.state.isRecurring ? 'Yes' : 'No'}
               defaultIndex={this.state.isRecurring ? 1 : 0}
               onSelect={(i, v) => {
@@ -361,6 +383,12 @@ class RegisterAvailabilityForm extends React.Component {
               dropdownStyle={styles.dropdownStyle}
               dropdownTextStyle={styles.dropdownTextStyle}
               style={styles.modalDropdown}
+            /> */}
+            <BottomModal
+              isVisible={this.state.recurringModal}
+              onBackPress={this.toggleRecModal}
+              onSelect={i => this.handleRecurringChange(i)}
+              data={this.state.recurringOptions}
             />
 
             {this.state.isRecurring && (
@@ -402,7 +430,13 @@ class RegisterAvailabilityForm extends React.Component {
               <View>
                 <Text style={styles.labelStyleAvail}>Set Location</Text>
 
-                <ModalDropdown
+                <TouchableOpacity onPress={this.toggleLocationModal}>
+                  <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
+                    {this.state.defaultLocation}
+                  </Text>
+                </TouchableOpacity>
+
+                {/* <ModalDropdown
                   defaultValue={this.state.defaultLocation}
                   onSelect={(i, v) => {
                     this.handleLocationChange(v, i);
@@ -412,6 +446,13 @@ class RegisterAvailabilityForm extends React.Component {
                   dropdownStyle={styles.dropdownStyle}
                   dropdownTextStyle={styles.dropdownTextStyle}
                   style={styles.modalDropdown}
+                /> */}
+
+                <BottomModal
+                  isVisible={this.state.locationModal}
+                  onBackPress={this.toggleLocationModal}
+                  onSelect={(i, v) => this.handleLocationChange(i, v)}
+                  data={this.state.locationData}
                 />
               </View>
             )}
