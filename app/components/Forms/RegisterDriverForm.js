@@ -166,7 +166,6 @@ class RegisterDriverForm extends React.Component {
   };
 
   onSelectRad = (data, index) => {
-    console.log('onseect rad', index);
     this.setState({
       radius: (Number(index) + 1) * 10,
       radiusModal: !this.state.radiusModal,
@@ -280,14 +279,7 @@ class RegisterDriverForm extends React.Component {
                   <Text style={styles.sectionTitle}>Volunteering for:</Text>
                 </View>
               </View>
-              {/* <ModalDropdown
-                defaultValue="Select an organization"
-                onSelect={(i, val) => this.getOrganizationId(val)}
-                options={this.state.orgs.map(org => org.name)}
-                textStyle={[styles.sectionTitle, { color: '#475c67' }]}
-                dropdownStyle={styles.dropdownStyle}
-                dropdownTextStyle={styles.dropdownTextStyle}
-              /> */}
+
               <View>
                 <TouchableOpacity onPress={this.toggleOrgModal}>
                   <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
@@ -297,7 +289,7 @@ class RegisterDriverForm extends React.Component {
                 <BottomModal
                   isVisible={this.state.orgModal}
                   onBackPress={this.toggleOrgModal}
-                  onSelect={this.onSelect}
+                  onSelect={this.onSelectOrg}
                   data={this.state.orgsNames}
                 />
               </View>
@@ -310,14 +302,6 @@ class RegisterDriverForm extends React.Component {
                   </Text>
                 </View>
               </View>
-              {/* <ModalDropdown
-                defaultValue="Select a Mileage"
-                onSelect={i => this.setState({ radius: (Number(i) + 1) * 10 })}
-                options={['10 Miles', '20 Miles', '30 Miles']}
-                textStyle={[styles.sectionTitle, { color: '#475c67' }]}
-                dropdownStyle={styles.dropdownStyle}
-                dropdownTextStyle={styles.dropdownTextStyle}
-              /> */}
               <View>
                 <TouchableOpacity onPress={this.toggleRadModal}>
                   <Text style={[styles.sectionTitle, { color: '#475c67' }]}>

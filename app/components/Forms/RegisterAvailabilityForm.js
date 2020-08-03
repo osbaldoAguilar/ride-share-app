@@ -30,10 +30,10 @@ class RegisterAvailabilityForm extends React.Component {
         endDate: isNewItem ? new Date() : params.item.endDate,
         startTime: isNewItem
           ? new Date()
-          : moment.utc(params.item.startTime).format('llll'),
+          : moment(params.item.startTime).format('llll'),
         endTime: isNewItem
           ? new Date()
-          : moment.utc(params.item.endTime).format('llll'),
+          : moment(params.item.endTime).format('llll'),
       },
       locationData: [],
       locations: [],

@@ -42,6 +42,7 @@ const BottomModal = ({ isVisible, onBackPress, onSelect, data }) => {
                   <TouchableOpacity
                     onPress={() => onSelect(data, index)}
                     style={{ alignItems: 'center' }}
+                    key={index}
                   >
                     <Text
                       style={{
