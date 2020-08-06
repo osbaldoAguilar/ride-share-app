@@ -11,31 +11,28 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
       return (
         <View
           style={{
-            padding: 5,
-            paddingLeft: 10,
-            paddingTop: 10,
             flex: 1,
             flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: 5,
           }}
         >
-          <Text style={{ fontSize: 16, color: '#475c67' }}>
-            {item.item.street}
-          </Text>
-          <Text style={{ fontSize: 16, color: '#475c67' }}>
-            , {item.item.city}
-          </Text>
-          <Text style={{ fontSize: 16, color: '#475c67' }}>
-            , {item.item.state}
-          </Text>
-          <Text style={{ fontSize: 16, color: '#475c67' }}>
-            {' '}
-            {item.item.zip}
-          </Text>
+          <View
+            style={{
+              paddingTop: 10,
+              flex: 1,
+              flexDirection: 'row',
+            }}
+          >
+            <Text style={{ fontSize: 16, color: '#475c67' }}>
+              {item.item.street}, {item.item.city}, {item.item.state},{' '}
+              {item.item.zip}
+            </Text>
+          </View>
+
           <View
             style={{
               flexDirection: 'row',
-              position: 'absolute',
-              right: 0,
               paddingTop: 5,
             }}
           >
@@ -44,7 +41,7 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
                 <Icon color="#ff8262" name="check-bold" size={25}></Icon>
               </View>
             )}
-            <View style={{ paddingLeft: 10 }}>
+            <View>
               <TouchableOpacity
                 onPress={() => {
                   console.log('pressed edit');
@@ -57,7 +54,7 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
                 <Icon color="#ff8262" name="pencil" size={25}></Icon>
               </TouchableOpacity>
             </View>
-            <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+            <View>
               <TouchableOpacity
                 onPress={() => handleDeleteLocation(item.item.id)}
               >

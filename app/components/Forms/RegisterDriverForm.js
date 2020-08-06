@@ -1,21 +1,34 @@
 import React from 'react';
-import { Text, ScrollView, View, Picker, TextInput } from 'react-native';
+import {
+  Text,
+  ScrollView,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import Block from '../Block';
 import { CalendarButton } from '../Button';
+import BottomModal from '../Modal/BottomModal';
 import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
-import ModalDropdown from 'react-native-modal-dropdown';
+
 
 class RegisterDriverForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       orgs: [],
+      orgsNames: [],
       orgNum: 1,
       radius: 0,
+      radiusOptions: ['10 Miles', '20 Miles', '30 Miles'],
       error: '',
+      orgModal: false,
+      radiusModal: false,
+      selectedOrg: 'Select an organization',
+      selectedRadius: 'Select a Mileage',
     };
   }
 
@@ -32,9 +45,16 @@ class RegisterDriverForm extends React.Component {
     //using API file, getOrgs function, which fetches list of orgs
     API.getOrgs()
       .then(res => {
+        console.log('orgs', res.organization);
         //store full list of all orgs in local state
+
+        //store names for modal
+        orgNames = [];
+        res.organization.map(org => orgNames.push(org.name));
+
         this.setState({
           orgs: res.organization,
+          orgsNames: orgNames,
         });
       })
       //if error performing API fetch for getting orgs, show error
@@ -132,16 +152,28 @@ class RegisterDriverForm extends React.Component {
     this.setState({ orgNum: selectedOrg.id });
   };
 
-  render() {
-    //take array of org names list retrieved from API call getOrgs function that was performed on did mount
-    //then map through each org name in list, create a Picker Item, use split to show only org name as label
-    //and store id number of corresponding org in the value
-    // console.log('isEditing: ', this.props.navigation.state.params);
-    const orgsList = this.state.orgs.map(eachOrg => (
-      <Picker.Item label={eachOrg.name} value={eachOrg.id} key={eachOrg} />
-    ));
-    let mileage;
+  toggleOrgModal = () => {
+    this.setState({ orgModal: !this.state.orgModal });
+  };
+  toggleRadModal = () => {
+    this.setState({ radiusModal: !this.state.radiusModal });
+  };
 
+  onSelectOrg = name => {
+    this.setState({ selectedOrg: name, orgModal: !this.state.orgModal }, () =>
+      this.getOrganizationId(name)
+    );
+  };
+
+  onSelectRad = (data, index) => {
+    this.setState({
+      radius: (Number(index) + 1) * 10,
+      radiusModal: !this.state.radiusModal,
+      selectedRadius: data,
+    });
+  };
+
+  render() {
     return (
       <ScrollView>
         <Block middle>
@@ -247,15 +279,20 @@ class RegisterDriverForm extends React.Component {
                   <Text style={styles.sectionTitle}>Volunteering for:</Text>
                 </View>
               </View>
-              <ModalDropdown
-                defaultValue="Select an organization"
-                onSelect={(i, val) => this.getOrganizationId(val)}
-                options={this.state.orgs.map(org => org.name)}
-                textStyle={[styles.sectionTitle, { color: '#475c67' }]}
-                dropdownStyle={styles.dropdownStyle}
-                dropdownTextStyle={styles.dropdownTextStyle}
-                style={styles.modalStyle}
-              />
+
+              <View>
+                <TouchableOpacity onPress={this.toggleOrgModal}>
+                  <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
+                    {this.state.selectedOrg}
+                  </Text>
+                </TouchableOpacity>
+                <BottomModal
+                  isVisible={this.state.orgModal}
+                  onBackPress={this.toggleOrgModal}
+                  onSelect={this.onSelectOrg}
+                  data={this.state.orgsNames}
+                />
+              </View>
             </View>
             <View>
               <View style={styles.section}>
@@ -265,15 +302,19 @@ class RegisterDriverForm extends React.Component {
                   </Text>
                 </View>
               </View>
-              <ModalDropdown
-                defaultValue="Select a Mileage"
-                onSelect={i => this.setState({ radius: (Number(i) + 1) * 10 })}
-                options={['10 Miles', '20 Miles', '30 Miles']}
-                textStyle={[styles.sectionTitle, { color: '#475c67' }]}
-                dropdownStyle={styles.dropdownStyle}
-                dropdownTextStyle={styles.dropdownTextStyle}
-                style={styles.modalDropdown}
-              />
+              <View>
+                <TouchableOpacity onPress={this.toggleRadModal}>
+                  <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
+                    {this.state.selectedRadius}
+                  </Text>
+                </TouchableOpacity>
+                <BottomModal
+                  isVisible={this.state.radiusModal}
+                  onBackPress={this.toggleRadModal}
+                  onSelect={this.onSelectRad}
+                  data={this.state.radiusOptions}
+                />
+              </View>
             </View>
             {this.state.error != '' && (
               <View
@@ -282,7 +323,9 @@ class RegisterDriverForm extends React.Component {
                 <Text style={styles.errorMessage}>{this.state.error}</Text>
               </View>
             )}
-            <View style={styles.footer}>
+            <View
+              style={[styles.footer, { paddingRight: 10, paddingLeft: 10 }]}
+            >
               <CalendarButton
                 title="Continue"
                 onPress={

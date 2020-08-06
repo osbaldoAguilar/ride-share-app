@@ -1,32 +1,35 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import styles from '../settings/settingsHeaderStyle';
+import styles from './styles';
 
-class RegisterHeader extends Component {
+class BackHeader extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
+    const { disable } = this.props;
+    console.log('header', disable);
     return (
       <View style={styles.mainContainer}>
-        <View style={styles.componentsContainer}>
-          <View style={styles.backButtonContainer}>
+        <View style={[styles.leftContainer, { paddingLeft: 10 }]}>
+          {disable ? null : (
             <TouchableOpacity
               onPress={this.props.onPress}
-              hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
+              style={{ width: 25 }}
             >
               <Icon name="ios-arrow-back" size={30} color="#ffffff" />
             </TouchableOpacity>
-          </View>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerText}>{this.props.title}</Text>
-          </View>
+          )}
         </View>
+        <View style={styles.centerContainer}>
+          <Text style={styles.headerText}>{this.props.title}</Text>
+        </View>
+        <View style={styles.rightContainer} />
       </View>
     );
   }
 }
 
-export default RegisterHeader;
+export default BackHeader;

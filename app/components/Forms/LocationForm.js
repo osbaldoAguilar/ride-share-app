@@ -12,7 +12,7 @@ import API from '../../api/api';
 import styles from './locationStyles.js';
 import AsyncStorage from '@react-native-community/async-storage';
 import Container from '../Container';
-import LocationHeader from '../Header/LocationHeader';
+import BackHeader from '../Header/BackHeader';
 import { ScrollView } from 'react-native-gesture-handler';
 
 class LocationForm extends Component {
@@ -122,9 +122,10 @@ class LocationForm extends Component {
     const { street, city, state_initials, zip_code, notes } = this.state;
     return (
       <Container>
-        <LocationHeader
+        <BackHeader
           onPress={this.handleBackButton}
           title={'Add Location'}
+          disable={false}
         />
         <ScrollView>
           <View style={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5 }}>

@@ -37,6 +37,7 @@ export default StyleSheet.create({
     color: '#475c67',
     fontWeight: '700',
     paddingTop: 10,
+    paddingLeft: 10,
     marginTop: 3,
     fontSize: 20,
   },
@@ -136,9 +137,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     display: 'flex',
   },
-  modalStyle: {
-    padding: 3,
-  },
+ 
   dropdownStyle: {
     width: '100%',
   },

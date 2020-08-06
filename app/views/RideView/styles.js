@@ -8,10 +8,10 @@ export default StyleSheet.create({
     flex: 2,
     backgroundColor: '#fcfcf6',
   },
-  userInfo:{
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+  userInfo: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomWidth: 2,
     borderColor: 'rgba(80, 69, 68, 0.28)',
     marginHorizontal: variables.sizes.margin,
@@ -21,8 +21,8 @@ export default StyleSheet.create({
   call: {
     backgroundColor: 'rgba(83, 194, 127, 0.56)',
     alignItems: 'center',
-    width:  width*0.15,
-    padding:5,
+    width: width * 0.15,
+    padding: 5,
     borderRadius: (width - 40) / 2,
   },
   overlay: {
@@ -41,89 +41,88 @@ export default StyleSheet.create({
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
   },
-  arrow:{
-    display: "flex",
-    alignItems:"flex-end",
-    paddingLeft: width*0.05,
+  arrow: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    paddingLeft: width * 0.05,
   },
-  grow:{
+  grow: {
     alignItems: 'flex-end',
     flexGrow: 1,
   },
   avatarContainer: {
     borderWidth: 2,
     borderColor: 'rgba(80, 69, 68, 0.28)',
-    position:'relative'
+    position: 'relative',
   },
-  information:{
+  information: {
     flexWrap: 'wrap',
-    marginLeft:6
+    marginLeft: 6,
   },
   nameText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#475c67'
+    color: '#475c67',
   },
   footer: {
-    paddingBottom: Platform.OS === 'ios' ? getBottomSpace() - 10 : 10
+    paddingBottom: Platform.OS === 'ios' ? getBottomSpace() - 10 : 10,
   },
-  riderNote:{
+  riderNote: {
     backgroundColor: '#fcfcf6',
-    marginBottom:10,
-    borderRadius:10,
-    padding:25,
-    alignItems: "center",
+    marginBottom: 10,
+    borderRadius: 10,
+    padding: 25,
+    alignItems: 'center',
     marginHorizontal: variables.sizes.margin,
   },
   note: {
-    marginTop:10,
-
+    marginTop: 10,
   },
-  modalview:{
-    marginBottom:10,
-    borderRadius:10,
+  modalview: {
+    marginBottom: 10,
+    borderRadius: 10,
     marginHorizontal: variables.sizes.margin,
   },
-  modalblock:{
-    borderRadius:10,
-    backgroundColor: "#fcfcf6",
-    marginBottom:10,
+  modalblock: {
+    borderRadius: 10,
+    backgroundColor: '#fcfcf6',
+    marginBottom: 10,
   },
   modalButton: {
-    backgroundColor: "#fcfcf6",
+    backgroundColor: '#fcfcf6',
     width: width - 90,
     paddingVertical: 15,
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
     borderColor: 'rgba(80, 69, 68, 0.28)',
   },
-  modalTitle:{
-    color: '#475c67'
+  modalTitle: {
+    color: '#475c67',
   },
   startRideButton: {
     backgroundColor: '#ff8262',
     borderRadius: (width - 40) / 2,
     width: width - variables.sizes.margin,
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   phoneButton: {
     backgroundColor: '#1eaa70',
     borderRadius: (width - 40) / 2,
     width: width - 90,
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   startRideContainer: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   startRideTitle: {
     fontSize: 22,
-    fontWeight: '600'
+    fontWeight: '600',
     // backgroundColor: 'black'
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   timerContainer: {
     backgroundColor: '#475c67',
@@ -134,16 +133,16 @@ export default StyleSheet.create({
     borderTopWidth: 20,
     borderBottomWidth: 20,
     borderWidth: 1,
-    borderColor: '#475c67'
+    borderColor: '#475c67',
   },
   timerText: {
     fontSize: 35,
-    color: '#fcfcf6'
+    color: '#fcfcf6',
   },
   textMask: {
     color: '#fcfcf6',
     fontSize: 22,
-    fontWeight: '600'
+    fontWeight: '600',
   },
   phoneStyle: {
     borderRadius: (width - 40) / 2,
@@ -152,6 +151,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: width - 90
-  }
+    width: width - 90,
+  },
 });

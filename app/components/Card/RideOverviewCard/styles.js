@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   overviewContainer: {
@@ -9,6 +9,7 @@ export default StyleSheet.create({
     marginBottom: 16,
     borderRadius: 25,
     alignItems: 'center',
+    padding: 10,
   },
   shadow: {
     shadowColor: '#000',

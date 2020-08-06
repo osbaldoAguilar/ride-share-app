@@ -1,7 +1,8 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Alert, Text, View, ScrollView} from 'react-native';
+import { Alert, Text, View, ScrollView } from 'react-native';
 import { Button, ThemeConsumer } from 'react-native-elements';
 import { InitOverviewCard } from '../../components/Card';
+import BackHeader from '../../components/Header/BackHeader';
 import styles from './styles';
 import API from '../../api/api';
 
@@ -37,13 +38,13 @@ export default class RequestedRidesDetails extends Component<Props> {
     const { navigation } = this.props;
     const token = navigation.getParam('token');
     const rideId = navigation.getParam('rideId');
-    API.getRide(token,rideId)
+    API.getRide(token, rideId)
       .then(res => {
         console.log('res', res);
         this.setState({
           firstName: res.ride.rider.first_name,
           lastName: res.ride.rider.last_name,
-          isLoading: false
+          isLoading: false,
         });
       })
       .catch(err => {
@@ -81,6 +82,11 @@ export default class RequestedRidesDetails extends Component<Props> {
     ]);
   };
 
+  handleBack = () => {
+    const { navigation } = this.props;
+    navigation.navigate('MainView');
+  };
+
   render() {
     const { textValue } = this.state;
     const { navigation } = this.props;
@@ -94,27 +100,29 @@ export default class RequestedRidesDetails extends Component<Props> {
     console.log('in RequestRideDetails endLocat:', endLocation);
     return (
       <View style={styles.container}>
-        <ScrollView
-        scrollsToTop
-        showsVerticalScrollIndicator={false}
-         >
-        <View style={styles.profileContainer}>
-          <Text numberOfLines={3} style={styles.nameText}>
-            Picking up:
-          </Text>
-          <Text numberOfLines={3} style={styles.nameText}>
-            {this.state.firstName} {this.state.lastName}
-          </Text>
-        </View>
+        <BackHeader
+          onPress={this.handleBack}
+          title={'Ride Details'}
+          disable={false}
+        />
+        <ScrollView scrollsToTop showsVerticalScrollIndicator={false}>
+          <View style={styles.profileContainer}>
+            <Text numberOfLines={3} style={styles.nameText}>
+              Picking up:
+            </Text>
+            <Text numberOfLines={3} style={styles.nameText}>
+              {this.state.firstName} {this.state.lastName}
+            </Text>
+          </View>
 
-        <View style={styles.cardContainer}>
-          <InitOverviewCard
-            pickupAddress={startLocation.join(', ')}
-            dropoffAddress={endLocation.join(', ')}
-            date={date}
-            note={reason}
-          />
-        </View>
+          <View style={styles.cardContainer}>
+            <InitOverviewCard
+              pickupAddress={startLocation.join(', ')}
+              dropoffAddress={endLocation.join(', ')}
+              date={date}
+              note={reason}
+            />
+          </View>
         </ScrollView>
 
         <View style={styles.buttonsContainer}>
