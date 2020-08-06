@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Keyboard } from 'react-native';
 import Container from '../../components/Container';
 import { RegisterVehicleForm } from '../../components/Forms';
-import RegisterHeader from './RegisterHeader';
+import BackHeader from '../../components/Header/BackHeader';
 import moment from 'moment';
 
 class RegisterVehicle extends Component {
@@ -10,7 +10,7 @@ class RegisterVehicle extends Component {
     super(props);
     this.state = {
       errors: [],
-      carData: {}
+      carData: {},
     };
     this.inputs = {};
   }
@@ -48,8 +48,8 @@ class RegisterVehicle extends Component {
         seat_belt_num: this.state.seat_belt_num,
         insurance_provider: this.state.insurance_provider,
         insurance_stop: moment(this.state.insurance_start).format('YYYY-MM-DD'),
-        insurance_start: moment(this.state.insurance_stop).format('YYYY-MM-DD')
-      }
+        insurance_start: moment(this.state.insurance_stop).format('YYYY-MM-DD'),
+      },
     };
     console.log('car data input is: ', vehicleInfo);
     this.setState({ carData: vehicleInfo });
@@ -60,9 +60,10 @@ class RegisterVehicle extends Component {
 
     return (
       <Container>
-        <RegisterHeader
+        <BackHeader
           onPress={this.handleBackButton}
           title={'Vehicle Info'}
+          disable={false}
         />
         <RegisterVehicleForm
           navigation={navigation}

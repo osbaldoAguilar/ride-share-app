@@ -9,6 +9,7 @@ import styles from '../../views/AgendaView/AgendaStyles';
 import Container from '../../components/Container';
 import { NavigationEvents } from 'react-navigation';
 import { CalendarButton } from '../../components/Button';
+import BackHeader from '../../components/Header/BackHeader';
 
 class AgendaView extends React.Component {
   constructor(props) {
@@ -148,7 +149,7 @@ class AgendaView extends React.Component {
 
   backButton = () => {
     const { navigation } = this.props;
-    navigation.navigate('MainView');
+    navigation.navigate('Settings');
   };
 
   render() {
@@ -159,20 +160,11 @@ class AgendaView extends React.Component {
       <Container>
         <NavigationEvents onDidFocus={() => this.getAvailability()} />
 
-        <View style={styles.mainContainer}>
-          <View style={styles.backButtonContainer}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Settings')}
-            >
-              <Icon name="chevron-left" size={36} color="#ffffff" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.componentsContainer}>
-            <View style={styles.headerTextContainer}>
-              <Text style={styles.headerText}>Availability</Text>
-            </View>
-          </View>
-        </View>
+        <BackHeader
+          onPress={this.backButton}
+          title={'Availability'}
+          disable={false}
+        />
 
         {this.state.renderAvails ? (
           <FlatList

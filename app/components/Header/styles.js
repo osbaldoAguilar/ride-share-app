@@ -1,5 +1,5 @@
-import {Platform, StyleSheet} from 'react-native';
-import {getStatusBarHeight} from './StatusBar';
+import { Platform, StyleSheet } from 'react-native';
+import { getStatusBarHeight } from './StatusBar';
 
 export default StyleSheet.create({
   headerContainer: {
@@ -11,7 +11,7 @@ export default StyleSheet.create({
     height: (Platform.OS === 'ios' ? 80 : 56) + getStatusBarHeight(),
   },
   close: {
-    paddingTop: 20
+    paddingTop: 20,
   },
   centerContainer: {
     flex: 3,
@@ -29,5 +29,20 @@ export default StyleSheet.create({
     color: 'white',
     fontSize: 22,
     fontWeight: '600',
+  },
+  mainContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    paddingTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
+    alignItems: 'center',
+    backgroundColor: '#1EAA70',
+    height: (Platform.OS === 'ios' ? 80 : 56) + getStatusBarHeight(),
+    marginTop: Platform.OS == 'android' ? 0 : 0,
+  },
+
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 25,
+    color: '#ffffff',
   },
 });

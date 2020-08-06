@@ -9,6 +9,8 @@ import {
   FlatList,
   Animated,
   Alert,
+  TouchableHighlightBase,
+  RefreshControl,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationEvents } from 'react-navigation';
@@ -19,9 +21,8 @@ import styles from './styles';
 import moment from 'moment';
 import variables from '../../utils/variables';
 import API from '../../api/api';
-type Props = {};
 
-export default class MainView extends Component<Props> {
+export default class MainView extends Component {
   scrollX = new Animated.Value(0);
   constructor(props) {
     super(props);
@@ -38,7 +39,7 @@ export default class MainView extends Component<Props> {
       hasReqRidesInAvail: false,
       showAllRides: false,
       toggleButtonText: 'Show All Requested Rides',
-      isLoading: true,
+      isLoading: false,
       isNewRegistered: isNewRegistered,
       driverApproved: false,
       token: '',
@@ -51,11 +52,13 @@ export default class MainView extends Component<Props> {
     }
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
+    this.setState({ isLoading: true });
     this.handleToken();
     this.state.isNewRegistered ? this.newRegistrationAlert() : null;
+
     console.log('main view', this.state.isNewRegistered);
-  }
+  };
 
   handleToken = async () => {
     console.log('handle token called');
@@ -76,7 +79,8 @@ export default class MainView extends Component<Props> {
 
   ridesRequests = async () => {
     const { token } = this.state;
-    this.setState({ isLoading: true });
+    //
+
     API.getAvailabilities(token).then(result => {
       if (result.json === undefined) {
         AsyncStorage.removeItem('token');
@@ -102,6 +106,9 @@ export default class MainView extends Component<Props> {
         if (application_state === 'accepted' && background_check) {
           API.getRides(token).then(result => {
             console.log('all rides: ', result.rides);
+
+            //if undefined don't do this...
+
             const rides = result.rides;
 
             //grab all rides and sort by date then check for scheduled and approved rides and sort / save seperately
@@ -554,7 +561,7 @@ export default class MainView extends Component<Props> {
       <View style={styles.container}>
         <NavigationEvents onDidFocus={() => this.handleToken()} />
         <StatusBar barStyle="light-content" backgroundColor="#1EAA70" />
-        <Header onPress={this.navigateToSettings} />
+        <Header onPress={this.navigateToSettings} title={'Welcome'} />
         {isLoading ? (
           this.renderLoader()
         ) : (
@@ -562,6 +569,12 @@ export default class MainView extends Component<Props> {
             scrollsToTop
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: variables.sizes.padding }}
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={this.ridesRequests}
+              />
+            }
           >
             {this.state.driverApproved ? (
               <>

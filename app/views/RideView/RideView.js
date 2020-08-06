@@ -13,6 +13,7 @@ import { Avatar, Button, Badge } from 'react-native-elements';
 import openMap from 'react-native-open-maps';
 import API from '../../api/api';
 import { InitOverviewCard, RideOverviewCard } from '../../components/Card';
+import BackHeader from '../../components/Header/BackHeader';
 import { Icon } from 'react-native-elements';
 // import moment from 'moment';
 import styles from './styles';
@@ -32,6 +33,7 @@ export default class RideView extends Component {
       showNote: false,
       startLocation: [],
       endLocation: [],
+      disable: false,
     };
   }
   componentDidMount = () => {
@@ -271,6 +273,7 @@ export default class RideView extends Component {
       this.onPickUpPress();
       this.setState({
         textValue: 'Tap to arrive',
+        disable: true,
       });
     } else if (textValue === 'Tap to arrive') {
       this.setState({
@@ -474,6 +477,11 @@ export default class RideView extends Component {
     });
   };
 
+  handleBack = () => {
+    const { navigation } = this.props;
+    navigation.navigate('MainView');
+  };
+
   render() {
     const {
       textValue,
@@ -487,6 +495,11 @@ export default class RideView extends Component {
 
     return (
       <View style={styles.container}>
+        <BackHeader
+          title={'Ride'}
+          onPress={this.handleBack}
+          disable={this.state.disable}
+        />
         <ScrollView scrollsToTop showsVerticalScrollIndicator={false}>
           <View style={{ flex: 1 }}>
             <View style={styles.userInfo}>

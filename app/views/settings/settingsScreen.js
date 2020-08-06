@@ -16,7 +16,7 @@ import { AddButton, CalendarButton } from '../../components/Button';
 
 import User from 'react-native-vector-icons/SimpleLineIcons';
 import { ScrollView } from 'react-native-gesture-handler';
-import SettingHeader from './header';
+import BackHeader from '../../components/Header/BackHeader';
 import styles from './settingsStyle.js';
 import API from '../../api/api';
 import { VehicleCard, LocationCard } from '../../components/Card';
@@ -490,7 +490,11 @@ class Settings extends Component {
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
-        <SettingHeader onPress={this.handleBackButton} />
+        <BackHeader
+          onPress={this.handleBackButton}
+          title={'Settings'}
+          disable={false}
+        />
         <ScrollView nestedScrollEnabled={true}>
           <View>
             <View style={styles.settingSection} stickyHeaderIndices={[0]}>

@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 // import PropTypes from 'prop-types';
 import styles from './styles';
 
-const Header = ({ onPress }) => (
+const Header = ({ onPress, title }) => (
   <LinearGradient
     start={{ x: 0, y: 0 }}
     end={{ x: 1, y: 0 }}
@@ -18,7 +18,7 @@ const Header = ({ onPress }) => (
     style={styles.headerContainer}
   >
     <View style={styles.leftContainer}>
-      <Text style={styles.titleText}>Welcome</Text>
+      <Text style={styles.titleText}>{title}</Text>
     </View>
     <View style={styles.rightContainer}>
       <TouchableOpacity onPress={onPress}>
