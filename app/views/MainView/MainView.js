@@ -42,6 +42,7 @@ export default class MainView extends Component<Props> {
       isNewRegistered: isNewRegistered,
       driverApproved: false,
       token: '',
+      //driveractive: true,
     };
   }
 
@@ -98,43 +99,44 @@ export default class MainView extends Component<Props> {
         console.log('after GETDRIVER: ', result);
         // const driverId = result.driver.id;
         // Check application_state is "accepted", background_check => true
-        const { id, application_state, background_check } = result.driver;
+        const { id, application_state, background_check, is_active } = result.driver;
         if (application_state === 'accepted' && background_check) {
-          API.getRides(token).then(result => {
-            console.log('all rides: ', result.rides);
-            const rides = result.rides;
-
-            //grab all rides and sort by date then check for scheduled and approved rides and sort / save seperately
-
-            const ridesReady = rides.filter(ride => {
-              return new Date(ride.pick_up_time) >= new Date();
+          if (is_active) {
+            API.getRides(token).then(result => {
+              console.log('all rides: ', result.rides);
+              const rides = result.rides;
+              //grab all rides and sort by date then check for scheduled and approved rides and sort / save seperately
+              const ridesReady = rides.filter(ride => {
+                return new Date(ride.pick_up_time) >= new Date();
+              });
+              console.log('before state', ridesReady);
+              const myRides = ridesReady.filter(ride => ride.driver_id === id);
+              console.log('just my rides: ', myRides);
+              const scheduledRides = myRides.filter(
+                ride => ride.status === 'scheduled'
+              );
+              console.log('scheduled rides: ', scheduledRides);
+              const approvedRides = ridesReady.filter(
+                ride => ride.status === 'approved'
+              );
+              console.log('approved rides: ', approvedRides);
+              const withinAvailRides = this.withinMyAvail(
+                rides.filter(ride => ride.status === 'approved')
+              );
+              console.log('approved rides in my avail: ', withinAvailRides);
+              this.setState({
+                scheduledRides,
+                approvedRides,
+                withinAvailRides,
+                isLoading: false,
+                driverApproved: true,
+                driveractive: true
+              });
+              console.log('driverApproved:', this.state.driverApproved);
             });
-            console.log('before state', ridesReady);
-
-            const myRides = ridesReady.filter(ride => ride.driver_id === id);
-            console.log('just my rides: ', myRides);
-            const scheduledRides = myRides.filter(
-              ride => ride.status === 'scheduled'
-            );
-            console.log('scheduled rides: ', scheduledRides);
-            const approvedRides = ridesReady.filter(
-              ride => ride.status === 'approved'
-            );
-            console.log('approved rides: ', approvedRides);
-            const withinAvailRides = this.withinMyAvail(
-              rides.filter(ride => ride.status === 'approved')
-            );
-            console.log('approved rides in my avail: ', withinAvailRides);
-
-            this.setState({
-              scheduledRides,
-              approvedRides,
-              withinAvailRides,
-              isLoading: false,
-              driverApproved: true,
-            });
-            console.log('driverApproved:', this.state.driverApproved);
-          });
+          } else {
+            this.setState({ isLoading: false, dirveractive: false });
+          }
         } else {
           this.setState({
             isLoading: false,
@@ -522,29 +524,29 @@ export default class MainView extends Component<Props> {
     const { isNewRegistered } = this.state;
     isNewRegistered
       ? Alert.alert(
-          'You have been Registered!',
-          'Next step is to add a vehicle, do you want to add one now?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => {
-                return;
-              },
-              style: 'cancel',
+        'You have been Registered!',
+        'Next step is to add a vehicle, do you want to add one now?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {
+              return;
             },
-            {
-              text: 'OK',
-              onPress: () => {
-                this.props.navigation.navigate('RegisterVehicle', {
-                  isAdding: true,
-                  isEditing: false,
-                  isCreating: false,
-                });
-              },
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              this.props.navigation.navigate('RegisterVehicle', {
+                isAdding: true,
+                isEditing: false,
+                isCreating: false,
+              });
             },
-          ],
-          { cancelable: false }
-        )
+          },
+        ],
+        { cancelable: false }
+      )
       : null;
   };
 
@@ -558,27 +560,28 @@ export default class MainView extends Component<Props> {
         {isLoading ? (
           this.renderLoader()
         ) : (
-          <ScrollView
-            scrollsToTop
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: variables.sizes.padding }}
-          >
-            {this.state.driverApproved ? (
-              <>
-                {this.renderUpcomingRides()}
-                {this.renderFilteredRides()}
-              </>
-            ) : (
-              console.log('NOthing')
-            )}
-            <View style={styles.statusBar}>
-              {!this.state.driverApproved ? (
-                <Text>Waiting to be approved by the administrators</Text>
-              ) : null}
-            </View>
-            {this.state.showAllRides && this.renderRequestedRides()}
-          </ScrollView>
-        )}
+            <ScrollView
+              scrollsToTop
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: variables.sizes.padding }}
+            >
+              {this.state.driverApproved ? (
+
+                <>
+                  {this.renderUpcomingRides()}
+                  {this.renderFilteredRides()}
+                </>
+              ) : (
+                  console.log('NOthing')
+                )}
+              <View style={styles.statusBar}>
+                {!this.state.driverApproved ? (
+                  <Text>Waiting to be approved by the administrators</Text>
+                ) : null}
+              </View>
+              {this.state.showAllRides && this.renderRequestedRides()}
+            </ScrollView>
+          )}
       </View>
     );
   }
