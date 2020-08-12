@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import variables from '../../utils/variables';
-import {getBottomSpace} from '../../components/Header/StatusBar';
+import { getBottomSpace } from '../../components/Header/StatusBar';
 
 const { height, width } = Dimensions.get('window');
 
@@ -10,7 +10,7 @@ export default StyleSheet.create({
     paddingRight: 20,
     fontWeight: 'bold',
     fontSize: 26,
-    color: '#475c67'
+    color: '#475c67',
   },
   footer: {
     paddingBottom: Platform.OS === 'ios' ? getBottomSpace() - 15 : 0,
@@ -40,14 +40,13 @@ export default StyleSheet.create({
     elevation: Platform.OS === 'ios' ? 0 : 5,
     flex: 5,
     flexDirection: 'row',
-    justifyContent: 'space-between'
   },
   flatListText: {
     fontSize: 18,
-    paddingLeft: 5
+    paddingLeft: 5,
   },
   leftContainer: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   // footer: {
   //   marginTop: 20,
@@ -61,39 +60,36 @@ export default StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-    elevation: 6
+    elevation: 6,
   },
   datePicker: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   flatlistContainer: {
-    backgroundColor: '#fcfcf6'
+    backgroundColor: '#fcfcf6',
   },
-  leftList: {
-    marginRight: 10,
-    marginTop: 5
-  },
+  leftList: { justifyContent: 'center' },
   centerList: {
     flex: 3,
-    justifyContent: 'space-between'
+    alignItems: 'center',
   },
   rightList: {
-    marginTop: 5
+    justifyContent: 'center',
   },
   formButton: {
-    backgroundColor: '#ff8262'
+    backgroundColor: '#ff8262',
   },
   inputRow: {
     flexDirection: 'row',
     margin: 5,
     justifyContent: 'space-evenly',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonContainer: {
     alignItems: 'center',
@@ -105,14 +101,14 @@ export default StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 4
+      height: 4,
     },
     shadowOpacity: 0.25,
     shadowRadius: 2.62,
     elevation: 4,
     marginLeft: 30,
     marginRight: 30,
-    marginTop: 20
+    marginTop: 20,
   },
   buttonWrapper: {
     marginHorizontal: variables.sizes.margin,
@@ -121,7 +117,7 @@ export default StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '700',
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   mainContainer: {
     flexDirection: 'row',
@@ -129,7 +125,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1EAA70',
     height: Platform.OS == 'ios' ? 120 : 80,
-    marginTop: Platform.OS == 'android' ? 0 : 0
+    marginTop: Platform.OS == 'android' ? 0 : 0,
   },
   componentsContainer: {
     paddingTop: Platform.OS == 'ios' ? 55 : 0,
@@ -152,11 +148,11 @@ export default StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: 25,
-    color: '#ffffff'
+    color: '#ffffff',
   },
   noAvailText: {
     fontSize: 18,
     paddingHorizontal: 25,
-    paddingTop: 10
-  }
+    paddingTop: 10,
+  },
 });

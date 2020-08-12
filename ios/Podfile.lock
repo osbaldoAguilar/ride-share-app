@@ -300,7 +300,7 @@ PODS:
     - React
   - RNCAsyncStorage (1.11.0):
     - React
-  - RNDateTimePicker (2.2.1):
+  - RNDateTimePicker (3.0.0):
     - React
   - RNGestureHandler (1.6.1):
     - React
@@ -496,7 +496,7 @@ SPEC CHECKSUMS:
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeDarkMode: 0178ffca3b10f6a7c9f49d6f9810232b328fa949
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
-  RNDateTimePicker: 1a251f8b276abda796d8119a96bcd1763a76f6b0
+  RNDateTimePicker: f47a6309133c6d013ad6942fc83b753b3f6e41d6
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788

@@ -108,10 +108,10 @@ class AgendaView extends React.Component {
         </View>
 
         <View style={styles.centerList}>
+          <Text style={styles.flatListText}>{date}</Text>
           {item.isRecurring && (
             <Text style={styles.flatListText}>Every {day}</Text>
           )}
-          {!item.isRecurring && <Text style={styles.flatListText}>{date}</Text>}
           <Text style={styles.flatListText}>
             {start} to {end}
           </Text>
@@ -153,9 +153,8 @@ class AgendaView extends React.Component {
   };
 
   render() {
-    let noItem = { id: null };
-    // //console.log('items from API call: ', this.state.response);
-    // console.log('recurrences in API call: ', this.state.others);
+    console.log('state in agenda view', this.state);
+
     return (
       <Container>
         <NavigationEvents onDidFocus={() => this.getAvailability()} />

@@ -7,12 +7,12 @@ import { CalendarButton } from '../Button';
 import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-import ModalDropdown from 'react-native-modal-dropdown';
+
 import DatePickerView from '../../views/DatePickerView/DatePickerView';
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import BottomModal from '../Modal/BottomModal';
 import Container from '../Container';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import BackHeader from '../Header/BackHeader';
 
 class RegisterAvailabilityForm extends React.Component {
@@ -29,12 +29,8 @@ class RegisterAvailabilityForm extends React.Component {
       availData: {
         startDate: isNewItem ? new Date() : params.item.startDate,
         endDate: isNewItem ? new Date() : params.item.endDate,
-        startTime: isNewItem
-          ? new Date()
-          : moment(params.item.startTime).format('llll'),
-        endTime: isNewItem
-          ? new Date()
-          : moment(params.item.endTime).format('llll'),
+        startTime: isNewItem ? new Date() : params.item.startTime,
+        endTime: isNewItem ? new Date() : params.item.endTime,
       },
       locationModal: false,
       locationData: [],
@@ -179,14 +175,15 @@ class RegisterAvailabilityForm extends React.Component {
     console.log('value', value);
     if (value === 'Yes') {
       console.log('inside if');
-      this.setState({ isRecurring: true, recurringModal: false });
+      this.setState({
+        isRecurring: true,
+        recurringModal: false,
+        availData: { ...this.state.availData, endDate: new Date() },
+      });
     } else this.setState({ isRecurring: false, recurringModal: false });
   };
 
   convertToUTC = async (date, time) => {
-    // const tzo = moment().utcOffset(time);
-    // console.warn('tzo', tzo);
-    // const timeData = time.toString().split(' ');
     const startTime = moment(time).format('HH:mm');
     console.warn('startTime', startTime);
     const dateConcat = moment(date).format('YYYY-MM-DD') + ' ' + startTime;
@@ -197,14 +194,11 @@ class RegisterAvailabilityForm extends React.Component {
   //async await needed for proper Promise handling during submit function
   handleUserSubmit = async () => {
     const { availData, isRecurring, selectedLocation } = this.state;
+    const isNew = this.props.navigation.state.params.new;
+    console.log('is new in submit', isNew);
 
-    // alert(
-    //   'Thank you for registering! You will receive an email regarding next steps within _ business days.'
-    // );
     let token = await AsyncStorage.getItem('token');
     token = JSON.parse(token);
-
-    let endDate = availData.endDate;
 
     let userEntries = {};
     const startTime = await this.convertToUTC(
@@ -215,9 +209,9 @@ class RegisterAvailabilityForm extends React.Component {
       availData.startDate,
       availData.endTime
     );
+    const endDate = moment(availData.endDate).format('YYYY-MM-DD');
     const startDate = moment(availData.startDate).format('YYYY-MM-DD');
-    console.warn('start time', startTime);
-    console.warn('end time', endTime);
+
     if (isRecurring) {
       userEntries = {
         start_time: startTime,
@@ -238,7 +232,7 @@ class RegisterAvailabilityForm extends React.Component {
 
     console.warn('user entries before api', userEntries);
 
-    try {
+    if (isNew) {
       const response = await API.createAvailability(
         userEntries,
         isRecurring,
@@ -260,12 +254,34 @@ class RegisterAvailabilityForm extends React.Component {
       this.props.navigation.navigate('AgendaView', {
         response: { ...response },
       });
-    } catch (err) {
-      console.log('AVAILABILLITY ERR RES: ', err);
+    } else {
+      const { item } = this.props.navigation.state.params;
+      console.log('inside edit else', item);
+      userEntries.id = item.id;
+
+      console.warn('data before edit api call', userEntries);
+
+      const editResponse = await API.editAvailability(
+        token.token,
+        userEntries,
+        isRecurring
+      );
+
+      console.warn('response', editResponse);
+
+      if (editResponse.error) {
+        this.setState({ error: editResponse.error });
+        return;
+      }
+
+      console.warn('respoonse from edit', editResponse);
       showMessage({
-        message: 'There was an error: ',
-        description: this.state.errorMessage.error,
-        type: 'danger',
+        message: 'Availability Added. ',
+        description: 'Thank you for volunteering!',
+        type: 'info',
+      });
+      this.props.navigation.navigate('AgendaView', {
+        response: { ...editResponse },
       });
     }
   };
@@ -289,8 +305,9 @@ class RegisterAvailabilityForm extends React.Component {
       endDate,
       locationData,
     } = this.state.availData;
+
     const { navigation } = this.props;
-    console.log('recrruning', this.state.isRecurring);
+    console.log('form info', this.state);
 
     return (
       <Container>
@@ -317,7 +334,7 @@ class RegisterAvailabilityForm extends React.Component {
             <Text style={styles.labelStyleAvail}>Availability Start Date:</Text>
             <View>
               <DatePickerView
-                dateProp={startDate}
+                dateProp={startTime}
                 display="default"
                 mode="date"
                 setDate={this.setStartDate}
@@ -326,7 +343,7 @@ class RegisterAvailabilityForm extends React.Component {
 
             <Text style={styles.displaySelection}>
               Selected date:
-              {moment(startDate).format('MMMM D, YYYY')}
+              {moment(startTime).format('MMMM D, YYYY')}
             </Text>
 
             <Text style={styles.labelStyleAvail}>Availability Start Time:</Text>
