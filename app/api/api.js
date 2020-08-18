@@ -129,6 +129,7 @@ export default {
     });
   },
   getAvailabilities(token) {
+    console.log('token in api', token);
     return apiWrapper({
       path: AVAILABILITIES,
       method: 'GET',
