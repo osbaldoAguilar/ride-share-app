@@ -7,19 +7,19 @@ import { CalendarButton } from '../Button';
 import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-import ModalDropdown from 'react-native-modal-dropdown';
+
 import DatePickerView from '../../views/DatePickerView/DatePickerView';
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 import BottomModal from '../Modal/BottomModal';
 import Container from '../Container';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import BackHeader from '../Header/BackHeader';
 
 class RegisterAvailabilityForm extends React.Component {
   constructor(props) {
     super(props);
     const isNewItem = this.props.navigation.state.params.new;
-    console.log('isNewItem', this.props.navigation);
+
     if (!isNewItem) {
       var { params } = props.navigation.state;
     }
@@ -28,13 +28,11 @@ class RegisterAvailabilityForm extends React.Component {
 
       availData: {
         startDate: isNewItem ? new Date() : params.item.startDate,
-        endDate: isNewItem ? new Date() : params.item.endDate,
-        startTime: isNewItem
+        endDate: isNewItem
           ? new Date()
-          : moment(params.item.startTime).format('llll'),
-        endTime: isNewItem
-          ? new Date()
-          : moment(params.item.endTime).format('llll'),
+          : moment.utc(params.item.endDate).format('llll'),
+        startTime: isNewItem ? new Date() : params.item.startTime,
+        endTime: isNewItem ? new Date() : params.item.endTime,
       },
       locationModal: false,
       locationData: [],
@@ -54,11 +52,9 @@ class RegisterAvailabilityForm extends React.Component {
 
     API.getLocations(token.token).then(res => {
       const locations = res.locations;
-      console.log('get locatins', locations);
 
       let locationData = [...this.state.locationData];
       locations.map(location => {
-        console.log('locations', location);
         let value = ''.concat(
           location.street,
           ' ',
@@ -69,26 +65,17 @@ class RegisterAvailabilityForm extends React.Component {
           location.zip
         );
         if (location.default_location) {
-          console.log('default true');
           let newVal = value.concat(' ', '(Default)');
-          console.log('after adding default', newVal);
-          console.log('selected location', location);
           locationData.push(newVal);
           this.setState({
             defaultLocation: newVal,
             selectedLocation: location.id,
           });
         } else {
-          console.log('string put together', value);
           locationData.push(value);
         }
       });
-      this.setState({ locationData }, () => {
-        console.log('state for locationData', locationData);
-      });
-      this.setState({ locations }, () => {
-        console.log('state for locations', this.state.locations);
-      });
+      this.setState({ locationData, locations });
     });
   };
 
@@ -116,7 +103,6 @@ class RegisterAvailabilityForm extends React.Component {
       //below values need to be changed, place-holding for now
       location_id: 1,
     };
-    console.log('avail data input is: ', availInfo);
     this.setState({ availData: availInfo });
   };
 
@@ -125,8 +111,6 @@ class RegisterAvailabilityForm extends React.Component {
   };
 
   handleLocationChange = (location, index) => {
-    console.log('location', location);
-    console.log('inside location change', index);
     const { locations } = this.state;
     const selectedLocation = locations[index].id;
     this.setState({
@@ -134,7 +118,6 @@ class RegisterAvailabilityForm extends React.Component {
       locationModal: false,
       defaultLocation: location,
     });
-    console.log('id', selectedLocation);
   };
   setStartDate = date => {
     this.setState({
@@ -146,8 +129,6 @@ class RegisterAvailabilityForm extends React.Component {
   };
 
   setStartTime = time => {
-    console.warn('PICKER', time);
-    console.log('startTime', time);
     this.setState({
       availData: {
         ...this.state.availData,
@@ -166,7 +147,6 @@ class RegisterAvailabilityForm extends React.Component {
   };
 
   setEndDate = date => {
-    console.log('end date for picker', date);
     this.setState({
       availData: {
         ...this.state.availData,
@@ -176,19 +156,17 @@ class RegisterAvailabilityForm extends React.Component {
   };
 
   handleRecurringChange = value => {
-    console.log('value', value);
     if (value === 'Yes') {
-      console.log('inside if');
-      this.setState({ isRecurring: true, recurringModal: false });
+      this.setState({
+        isRecurring: true,
+        recurringModal: false,
+        availData: { ...this.state.availData, endDate: new Date() },
+      });
     } else this.setState({ isRecurring: false, recurringModal: false });
   };
 
   convertToUTC = async (date, time) => {
-    // const tzo = moment().utcOffset(time);
-    // console.warn('tzo', tzo);
-    // const timeData = time.toString().split(' ');
     const startTime = moment(time).format('HH:mm');
-    console.warn('startTime', startTime);
     const dateConcat = moment(date).format('YYYY-MM-DD') + ' ' + startTime;
     const utcConversion = moment(dateConcat);
     return utcConversion;
@@ -197,55 +175,44 @@ class RegisterAvailabilityForm extends React.Component {
   //async await needed for proper Promise handling during submit function
   handleUserSubmit = async () => {
     const { availData, isRecurring, selectedLocation } = this.state;
+    const { startDate, startTime, endDate, endTime } = availData;
+    const isNew = this.props.navigation.state.params.new;
 
-    // alert(
-    //   'Thank you for registering! You will receive an email regarding next steps within _ business days.'
-    // );
     let token = await AsyncStorage.getItem('token');
     token = JSON.parse(token);
 
-    let endDate = availData.endDate;
-
     let userEntries = {};
-    const startTime = await this.convertToUTC(
-      availData.startDate,
-      availData.startTime
-    );
-    const endTime = await this.convertToUTC(
-      availData.startDate,
-      availData.endTime
-    );
-    const startDate = moment(availData.startDate).format('YYYY-MM-DD');
-    console.warn('start time', startTime);
-    console.warn('end time', endTime);
+
+    const convEndDate = moment(endDate).format('YYYY-MM-DD');
+    const convStartDate = moment(startDate).format('YYYY-MM-DD');
+
+    const convStartTime = await this.convertToUTC(startDate, startTime);
+    const convEndTime = await this.convertToUTC(startDate, endTime);
+
     if (isRecurring) {
       userEntries = {
-        start_time: startTime,
-        end_time: endTime,
+        start_time: convStartTime,
+        end_time: convEndTime,
         is_recurring: isRecurring,
         location_id: selectedLocation,
-        start_date: startDate,
-        end_date: endDate,
+        start_date: convStartDate,
+        end_date: convEndDate,
       };
     } else {
       userEntries = {
-        start_time: startTime,
-        end_time: endTime,
+        start_time: convStartTime,
+        end_time: convEndTime,
         is_recurring: isRecurring,
         location_id: selectedLocation,
       };
     }
 
-    console.warn('user entries before api', userEntries);
-
-    try {
+    if (isNew) {
       const response = await API.createAvailability(
         userEntries,
         isRecurring,
         token.token
       );
-
-      console.warn('response from create', response);
 
       if (response.error) {
         this.setState({ error: response.error });
@@ -260,12 +227,28 @@ class RegisterAvailabilityForm extends React.Component {
       this.props.navigation.navigate('AgendaView', {
         response: { ...response },
       });
-    } catch (err) {
-      console.log('AVAILABILLITY ERR RES: ', err);
+    } else {
+      const { item } = this.props.navigation.state.params;
+      userEntries.id = item.id;
+
+      const editResponse = await API.editAvailability(
+        token.token,
+        userEntries,
+        isRecurring
+      );
+
+      if (editResponse.error) {
+        this.setState({ error: editResponse.error });
+        return;
+      }
+
       showMessage({
-        message: 'There was an error: ',
-        description: this.state.errorMessage.error,
-        type: 'danger',
+        message: 'Availability Added. ',
+        description: 'Thank you for volunteering!',
+        type: 'info',
+      });
+      this.props.navigation.navigate('AgendaView', {
+        response: { ...editResponse },
       });
     }
   };
@@ -282,15 +265,18 @@ class RegisterAvailabilityForm extends React.Component {
     navigation.navigate('AgendaView');
   };
   render() {
-    let {
-      startDate,
-      startTime,
-      endTime,
-      endDate,
+    const { startDate, startTime, endTime, endDate } = this.state.availData;
+    const {
       locationData,
-    } = this.state.availData;
+      isRecurring,
+      defaultLocation,
+      recurringModal,
+      recurringOptions,
+      error,
+      locationModal,
+    } = this.state;
+
     const { navigation } = this.props;
-    console.log('recrruning', this.state.isRecurring);
 
     return (
       <Container>
@@ -326,7 +312,7 @@ class RegisterAvailabilityForm extends React.Component {
 
             <Text style={styles.displaySelection}>
               Selected date:
-              {moment(startDate).format('MMMM D, YYYY')}
+              {moment(startTime).format('MMMM D, YYYY')}
             </Text>
 
             <Text style={styles.labelStyleAvail}>Availability Start Time:</Text>
@@ -365,33 +351,17 @@ class RegisterAvailabilityForm extends React.Component {
             </Text>
             <TouchableOpacity onPress={this.toggleRecModal}>
               <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
-                {this.state.isRecurring ? 'Yes' : 'No'}
+                {isRecurring ? 'Yes' : 'No'}
               </Text>
             </TouchableOpacity>
-            {/* <ModalDropdown
-              defaultValue={this.state.isRecurring ? 'Yes' : 'No'}
-              defaultIndex={this.state.isRecurring ? 1 : 0}
-              onSelect={(i, v) => {
-                const values = [false, true];
-                if (values.includes(true, false)) {
-                  return this.setState({ isRecurring: values[i] });
-                }
-                this.setState({ isRecurring: false });
-              }}
-              options={['No', 'Yes']}
-              textStyle={[styles.sectionTitle, { color: '#475c67' }]}
-              dropdownStyle={styles.dropdownStyle}
-              dropdownTextStyle={styles.dropdownTextStyle}
-              style={styles.modalDropdown}
-            /> */}
             <BottomModal
-              isVisible={this.state.recurringModal}
+              isVisible={recurringModal}
               onBackPress={this.toggleRecModal}
               onSelect={i => this.handleRecurringChange(i)}
-              data={this.state.recurringOptions}
+              data={recurringOptions}
             />
 
-            {this.state.isRecurring && (
+            {isRecurring && (
               <View>
                 <Text style={styles.labelStyleAvail}>
                   Date to End Recurring Availability:
@@ -406,58 +376,26 @@ class RegisterAvailabilityForm extends React.Component {
                 </Text>
               </View>
             )}
-
-            {/* {this.state.is_recurring === 'true' && 
-              <Sae 
-                  label="End Recurring Schedule Date (YYYY-MM-DD)"
-                  labelStyle={styles.labelStyle}
-                  inputPadding={16}
-                  labelHeight={24}
-                  // active border height
-                  borderHeight={2}
-                  borderColor="#475c67"
-                  style={[styles.saeInput]}
-                  inputStyle={styles.saeText}
-                  // TextInput props
-                  returnKeyType="next"
-                  onChangeText={text => this.props.handleChange(text, 'end_date')}
-                  ref={input => this.props.innerRef(input, 'EndDate')}
-                  onSubmitEditing={() => this.props.handleSubmitEditing('EndDate')}
-                //   blurOnSubmit={false}>
-              />
-            } */}
-            {this.state.locationData.length > 0 && (
+            {locationData.length > 0 && (
               <View>
                 <Text style={styles.labelStyleAvail}>Set Location</Text>
 
                 <TouchableOpacity onPress={this.toggleLocationModal}>
                   <Text style={[styles.sectionTitle, { color: '#475c67' }]}>
-                    {this.state.defaultLocation}
+                    {defaultLocation}
                   </Text>
                 </TouchableOpacity>
 
-                {/* <ModalDropdown
-                  defaultValue={this.state.defaultLocation}
-                  onSelect={(i, v) => {
-                    this.handleLocationChange(v, i);
-                  }}
-                  options={this.state.locationData}
-                  textStyle={[styles.sectionTitle, { color: '#475c67' }]}
-                  dropdownStyle={styles.dropdownStyle}
-                  dropdownTextStyle={styles.dropdownTextStyle}
-                  style={styles.modalDropdown}
-                /> */}
-
                 <BottomModal
-                  isVisible={this.state.locationModal}
+                  isVisible={locationModal}
                   onBackPress={this.toggleLocationModal}
                   onSelect={(i, v) => this.handleLocationChange(i, v)}
-                  data={this.state.locationData}
+                  data={locationData}
                 />
               </View>
             )}
 
-            {this.state.locationData.length === 0 && (
+            {locationData.length === 0 && (
               <Text
                 style={{
                   paddingTop: 5,
@@ -471,13 +409,13 @@ class RegisterAvailabilityForm extends React.Component {
               </Text>
             )}
 
-            {this.state.error != '' && (
+            {error != '' && (
               <View>
-                <Text style={styles.errorMessage}>{this.state.error}</Text>
+                <Text style={styles.errorMessage}>{error}</Text>
               </View>
             )}
 
-            {this.state.locationData.length > 0 && (
+            {locationData.length > 0 && (
               <Block style={styles.footer}>
                 <CalendarButton
                   title="Submit"

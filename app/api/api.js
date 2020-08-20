@@ -129,6 +129,7 @@ export default {
     });
   },
   getAvailabilities(token) {
+    console.log('token in api', token);
     return apiWrapper({
       path: AVAILABILITIES,
       method: 'GET',
@@ -143,43 +144,41 @@ export default {
       token,
     });
   },
-  editAvailability(token, eventID, userEntries, recurring, endDate) {
-    let recurringParsed = JSON.parse(recurring);
-    console.log('recurring parsed', recurringParsed);
-    if (recurring === 'true') {
+  editAvailability(token, userEntries, recurring) {
+    console.log('recurring parsed', recurring);
+    console.log('editAvail', userEntries);
+    if (recurring) {
+      console.warn('in if', userEntries);
       const availability = {
-        start_date: startDate,
-        end_date: endDate,
+        start_date: userEntries.start_date,
+        end_date: userEntries.end_date,
         start_time: userEntries.start_time,
         end_time: userEntries.end_time,
-        is_recurring: recurringParsed,
+        is_recurring: recurring,
         location_id: userEntries.location_id,
-        id: eventID,
       };
       return apiWrapper({
         path: AVAILABILITIES,
         token,
         body: availability,
         method: 'PUT',
-        params: eventID,
+        params: `/${userEntries.id}`,
       });
     } else {
+      console.warn('in else');
       let avail = userEntries;
       avail = {
-        start_date: avail.start_time,
-        end_date: avail.end_time,
         start_time: avail.start_time,
         end_time: avail.end_time,
-        is_recurring: recurringParsed,
+        is_recurring: recurring,
         location_id: userEntries.location_id,
-        id: eventID,
       };
       return apiWrapper({
         path: AVAILABILITIES,
         token,
         body: avail,
         method: 'PUT',
-        params: eventID,
+        params: `/${userEntries.id}`,
       });
     }
   },
