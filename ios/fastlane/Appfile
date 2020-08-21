@@ -1,5 +1,5 @@
 app_identifier("com.CodeTheDream.crsn") # The bundle identifier of your app
-apple_id("tom@codethedream.org") # Your Apple email address
+apple_id("dev@codethedream.org") # Your Apple email address
 
 itc_team_id("120401598") # App Store Connect Team ID
 team_id("LN2WF7HK5J") # Developer Portal Team ID
