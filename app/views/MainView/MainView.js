@@ -9,6 +9,7 @@ import {
   FlatList,
   Animated,
   Alert,
+  Button,
   TouchableHighlightBase,
   RefreshControl,
 } from 'react-native';
@@ -21,6 +22,7 @@ import styles from './styles';
 import moment from 'moment';
 import variables from '../../utils/variables';
 import API from '../../api/api';
+import { TextInput } from 'react-native-gesture-handler';
 
 export default class MainView extends Component {
   scrollX = new Animated.Value(0);
@@ -43,7 +45,7 @@ export default class MainView extends Component {
       isNewRegistered: isNewRegistered,
       driverApproved: false,
       token: '',
-      //driveractive: true,
+      driveractive: true,
     };
   }
 
@@ -139,7 +141,7 @@ export default class MainView extends Component {
               console.log('driverApproved:', this.state.driverApproved);
             });
           } else {
-            this.setState({ isLoading: false, dirveractive: false });
+            this.setState({ isLoading: false,  driveractive: false });
           }
         } else {
           this.setState({
@@ -553,9 +555,25 @@ export default class MainView extends Component {
       )
       : null;
   };
-
+ rendernonactivedriver= ()=>{
+   return(
+     <View style={{paddingTop:60,justifyContent:'center',alignItems:'center'
+     }}>
+    
+       <Text>Driver is not  Active!</Text>
+       <Text>Go to setting to change driver status!</Text>
+       <TouchableOpacity onPress={this.navigateToSettings}>
+      
+                  <Text>Go To</Text>
+                </TouchableOpacity>
+       
+     </View>
+   )
+ }
   render() {
     const { isLoading } = this.state;
+   // const driveractive= false;
+    console.log("driveractive", this.state.driveractive)
     return (
       <View style={styles.container}>
         <NavigationEvents onDidFocus={() => this.handleToken()} />
@@ -564,6 +582,8 @@ export default class MainView extends Component {
         {isLoading ? (
           this.renderLoader()
         ) : (
+          <View>
+            {!this.state.driveractive ? this.rendernonactivedriver() :
           <ScrollView
             scrollsToTop
             showsVerticalScrollIndicator={false}
@@ -590,6 +610,8 @@ export default class MainView extends Component {
             </View>
             {this.state.showAllRides && this.renderRequestedRides()}
           </ScrollView>
+  }
+          </View>
         )}
       </View>
     );
