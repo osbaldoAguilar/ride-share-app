@@ -561,8 +561,8 @@ export default class MainView extends Component {
      <View style={{paddingTop:60,justifyContent:'center',alignItems:'center'
      }}>
     
-       <Text>Driver is not  Active!</Text>
-       <Text style={{marginBottom:20}}>Go to setting to change driver status!</Text>
+       <Text style={{fontSize:20}}>Driver is not  Active!</Text>
+       <Text style={{marginBottom:20 ,fontSize:20}}>Go to setting to change driver status!</Text>
      
   
        <TouchableOpacity onPress={this.navigateToSettings}
