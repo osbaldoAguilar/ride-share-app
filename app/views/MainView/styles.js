@@ -144,4 +144,16 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  gobackButton: {
+    paddingTop: 5,
+    backgroundColor: '#475c67',
+    borderRadius: 20,
+    width: 100,
+    height: 40,
+    alignItems: 'center',
+  },
+  buttonTitle: {
+    fontSize: 20,
+    color: '#ffffff',
+  }
 });

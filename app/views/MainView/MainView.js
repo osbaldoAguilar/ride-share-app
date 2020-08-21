@@ -557,17 +557,21 @@ export default class MainView extends Component {
   };
  rendernonactivedriver= ()=>{
    return(
+  
      <View style={{paddingTop:60,justifyContent:'center',alignItems:'center'
      }}>
     
        <Text>Driver is not  Active!</Text>
-       <Text>Go to setting to change driver status!</Text>
-       <TouchableOpacity onPress={this.navigateToSettings}>
-      
-                  <Text>Go To</Text>
+       <Text style={{marginBottom:20}}>Go to setting to change driver status!</Text>
+     
+  
+       <TouchableOpacity onPress={this.navigateToSettings}
+       style={styles.gobackButton}>
+                  <Text style={styles.buttonTitle}>Go To</Text>
                 </TouchableOpacity>
        
      </View>
+     
    )
  }
   render() {
