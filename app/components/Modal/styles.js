@@ -3,16 +3,15 @@ import variables from '../../utils/variables';
 
 export default StyleSheet.create({
   modalWrapper: {
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
     shadowColor: '#000',
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 15,
     elevation: Platform.OS === 'ios' ? 0 : 5,
-    justifyContent: 'flex-end',
-  },
-  modalContainer: {
     backgroundColor: 'white',
-
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

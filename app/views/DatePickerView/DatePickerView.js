@@ -15,8 +15,8 @@ const DatePickerView = ({ setDate, mode, title, dateProp }) => {
   };
 
   const handleConfirm = date => {
-    setDate(date);
     hideDatePicker();
+    setDate(date);
   };
 
   // If is a string means comes from the backend, we should convert it to a Date.

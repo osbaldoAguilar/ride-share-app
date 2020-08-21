@@ -312,7 +312,7 @@ class RegisterAvailabilityForm extends React.Component {
 
             <Text style={styles.displaySelection}>
               Selected date:
-              {moment(startTime).format('MMMM D, YYYY')}
+              {moment(startDate).format('MMMM D, YYYY')}
             </Text>
 
             <Text style={styles.labelStyleAvail}>Availability Start Time:</Text>
