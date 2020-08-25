@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import api from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -46,7 +46,7 @@ class AgendaView extends React.Component {
           result.push({
             id: item.eventId,
             startTime: item.startTime,
-            startDate: item.startDate,
+            startDate: item.startTime,
             endTime: item.endTime,
             endDate: item.endDate,
             isRecurring: item.isRecurring,
@@ -59,22 +59,28 @@ class AgendaView extends React.Component {
           others.push({
             id: item.eventId,
             startTime: item.startTime,
-            startDate: item.startDate,
+            startDate: item.startTime,
             endTime: item.endTime,
             endDate: item.endDate,
             isRecurring: item.isRecurring,
             day: item.startTime, //same with this one
           });
         }
-        this.setState(
-          {
-            response: result,
-            others: others,
-            renderAvails: true,
-          },
-          () => console.log('state', this.state)
-        );
       }
+
+      //filter results by date
+      resultSorted = result.sort(
+        (a, b) => new Date(a.startTime) - new Date(b.startTime)
+      );
+
+      this.setState(
+        {
+          response: resultSorted,
+          others: others,
+          renderAvails: true,
+        },
+        () => console.log('state', this.state)
+      );
     }
   };
 
@@ -83,6 +89,7 @@ class AgendaView extends React.Component {
     const editItem = item;
     let id = item.id;
     let date = moment(item.startTime).format('MMMM D, YYYY');
+    console.log('render item date');
     let start = moment(item.startTime)
       .local()
       .format('h:mm A');
@@ -92,9 +99,8 @@ class AgendaView extends React.Component {
       .format('h:mm A');
     let day = moment(item.startTime).format('dddd');
     let endDate = item.endDate;
-    console.log('end date test match', endDate);
-    let ending = moment(endDate).format('MMMM D, YYYY');
-    //console.log('maybe? ', ending);
+
+    let ending = moment(endDate, 'YYYY-MM-DD').format('MMMM D, YYYY');
 
     return (
       <View
@@ -108,10 +114,10 @@ class AgendaView extends React.Component {
         </View>
 
         <View style={styles.centerList}>
+          <Text style={styles.flatListText}>{date}</Text>
           {item.isRecurring && (
             <Text style={styles.flatListText}>Every {day}</Text>
           )}
-          {!item.isRecurring && <Text style={styles.flatListText}>{date}</Text>}
           <Text style={styles.flatListText}>
             {start} to {end}
           </Text>
@@ -131,13 +137,12 @@ class AgendaView extends React.Component {
 
   redirectToAddAvail = () => {
     const { navigation } = this.props;
-    console.log('item being passed to form');
     navigation.navigate('RegisterAvailabilityForm', { new: true });
   };
 
   redirectToEditAvail = item => {
     const { navigation } = this.props;
-    console.log('item being passed to form', item);
+
     navigation.navigate('RegisterAvailabilityForm', { new: false, item });
   };
 
@@ -153,9 +158,6 @@ class AgendaView extends React.Component {
   };
 
   render() {
-    let noItem = { id: null };
-    // //console.log('items from API call: ', this.state.response);
-    // console.log('recurrences in API call: ', this.state.others);
     return (
       <Container>
         <NavigationEvents onDidFocus={() => this.getAvailability()} />
