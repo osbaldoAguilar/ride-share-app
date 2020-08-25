@@ -1,4 +1,5 @@
 export const apiBaseUrl = 'https://ctd-rideshare.herokuapp.com/api/v1/';
+export const PASSWORDCHANGE='password_change';
 // paths
 export const LOGIN = 'login';
 export const DRIVER = 'drivers';

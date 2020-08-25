@@ -562,12 +562,12 @@ export default class MainView extends Component {
      }}>
     
        <Text style={{fontSize:20}}>Driver is not  Active!</Text>
-       <Text style={{marginBottom:20 ,fontSize:20}}>Go to setting to change driver status!</Text>
+       <Text style={{marginBottom:20 ,fontSize:20}}>Go to Settings to change driver status!</Text>
      
   
        <TouchableOpacity onPress={this.navigateToSettings}
        style={styles.gobackButton}>
-                  <Text style={styles.buttonTitle}>Go To</Text>
+                  <Text style={styles.buttonTitle}>Settings</Text>
                 </TouchableOpacity>
        
      </View>
