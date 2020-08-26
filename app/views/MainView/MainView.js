@@ -9,20 +9,15 @@ import {
   FlatList,
   Animated,
   Alert,
-  Button,
-  TouchableHighlightBase,
   RefreshControl,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationEvents } from 'react-navigation';
 import { Header } from '../../components/Header';
 import { UpcomingRideCard, RequestedRideCard } from '../../components/Card';
-
 import styles from './styles';
-import moment from 'moment';
 import variables from '../../utils/variables';
 import API from '../../api/api';
-import { TextInput } from 'react-native-gesture-handler';
 
 export default class MainView extends Component {
   scrollX = new Animated.Value(0);
@@ -51,6 +46,7 @@ export default class MainView extends Component {
 
   componentDidUpdate = prevProps => {
     if (prevProps.navigation !== this.props.navigation) {
+      console.log('updated');
       this.handleToken();
     }
   };
@@ -105,7 +101,12 @@ export default class MainView extends Component {
         console.log('after GETDRIVER: ', result);
         // const driverId = result.driver.id;
         // Check application_state is "accepted", background_check => true
-        const { id, application_state, background_check, is_active } = result.driver;
+        const {
+          id,
+          application_state,
+          background_check,
+          is_active,
+        } = result.driver;
         if (application_state === 'accepted' && background_check) {
           if (is_active) {
             API.getRides(token).then(result => {
@@ -136,12 +137,12 @@ export default class MainView extends Component {
                 withinAvailRides,
                 isLoading: false,
                 driverApproved: true,
-                driveractive: true
+                driveractive: true,
               });
               console.log('driverApproved:', this.state.driverApproved);
             });
           } else {
-            this.setState({ isLoading: false,  driveractive: false });
+            this.setState({ isLoading: false, driveractive: false });
           }
         } else {
           this.setState({
@@ -530,54 +531,58 @@ export default class MainView extends Component {
     const { isNewRegistered } = this.state;
     isNewRegistered
       ? Alert.alert(
-        'You have been Registered!',
-        'Next step is to add a vehicle, do you want to add one now?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => {
-              return;
+          'You have been Registered!',
+          'Next step is to add a vehicle, do you want to add one now?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => {
+                return;
+              },
+              style: 'cancel',
             },
-            style: 'cancel',
-          },
-          {
-            text: 'OK',
-            onPress: () => {
-              this.props.navigation.navigate('RegisterVehicle', {
-                isAdding: true,
-                isEditing: false,
-                isCreating: false,
-              });
+            {
+              text: 'OK',
+              onPress: () => {
+                this.props.navigation.navigate('RegisterVehicle', {
+                  isAdding: true,
+                  isEditing: false,
+                  isCreating: false,
+                });
+              },
             },
-          },
-        ],
-        { cancelable: false }
-      )
+          ],
+          { cancelable: false }
+        )
       : null;
   };
- rendernonactivedriver= ()=>{
-   return(
-  
-     <View style={{paddingTop:60,justifyContent:'center',alignItems:'center'
-     }}>
-    
-       <Text style={{fontSize:20}}>Driver is not  Active!</Text>
-       <Text style={{marginBottom:20 ,fontSize:20}}>Go to Settings to change driver status!</Text>
-     
-  
-       <TouchableOpacity onPress={this.navigateToSettings}
-       style={styles.gobackButton}>
-                  <Text style={styles.buttonTitle}>Settings</Text>
-                </TouchableOpacity>
-       
-     </View>
-     
-   )
- }
+  rendernonactivedriver = () => {
+    return (
+      <View
+        style={{
+          paddingTop: 60,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>Driver is not Active!</Text>
+        <Text style={{ marginBottom: 20, fontSize: 20 }}>
+          Go to Settings to change driver status!
+        </Text>
+
+        <TouchableOpacity
+          onPress={this.navigateToSettings}
+          style={styles.gobackButton}
+        >
+          <Text style={styles.buttonTitle}>Settings</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   render() {
     const { isLoading } = this.state;
-   // const driveractive= false;
-    console.log("driveractive", this.state.driveractive)
+    // const driveractive= false;
+    console.log('driveractive', this.state.driveractive);
     return (
       <View style={styles.container}>
         <NavigationEvents onDidFocus={() => this.handleToken()} />
@@ -587,34 +592,39 @@ export default class MainView extends Component {
           this.renderLoader()
         ) : (
           <View>
-            {!this.state.driveractive ? this.rendernonactivedriver() :
-          <ScrollView
-            scrollsToTop
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: variables.sizes.padding }}
-            refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={this.ridesRequests}
-              />
-            }
-          >
-            {this.state.driverApproved ? (
-              <>
-                {this.renderUpcomingRides()}
-                {this.renderFilteredRides()}
-              </>
+            {!this.state.driveractive ? (
+              this.rendernonactivedriver()
             ) : (
-              console.log('NOthing')
+              <ScrollView
+                scrollsToTop
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  paddingBottom: variables.sizes.padding,
+                  height: '100%',
+                }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isLoading}
+                    onRefresh={this.ridesRequests}
+                  />
+                }
+              >
+                {this.state.driverApproved ? (
+                  <>
+                    {this.renderUpcomingRides()}
+                    {this.renderFilteredRides()}
+                  </>
+                ) : (
+                  console.log('NOthing')
+                )}
+                <View style={styles.statusBar}>
+                  {!this.state.driverApproved ? (
+                    <Text>Waiting to be approved by the administrators</Text>
+                  ) : null}
+                </View>
+                {this.state.showAllRides && this.renderRequestedRides()}
+              </ScrollView>
             )}
-            <View style={styles.statusBar}>
-              {!this.state.driverApproved ? (
-                <Text>Waiting to be approved by the administrators</Text>
-              ) : null}
-            </View>
-            {this.state.showAllRides && this.renderRequestedRides()}
-          </ScrollView>
-  }
           </View>
         )}
       </View>
