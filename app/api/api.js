@@ -10,6 +10,7 @@ import {
   VEHICLES,
   ORGANIZATIONS,
   LOCATIONS,
+  DRIVER,
 } from '../utils/urls';
 import apiWrapper from './apiWrapper';
 //TODO get the ride id not the rider id from the API to accept the correct response
@@ -31,6 +32,15 @@ export default {
       params: 'password_reset',
       body: { email },
       method: 'POST',
+    });
+  },
+  passwordChange(token) {
+    console.log('data wihthin passwordReset', Token);
+    return apiWrapper({
+      path: DRIVER,
+      params:`${PASSWORDCHANGE}`,
+      method: 'PUT',
+      token,
     });
   },
   getRides(token) {

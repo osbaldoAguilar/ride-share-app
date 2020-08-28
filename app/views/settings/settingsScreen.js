@@ -146,7 +146,13 @@ class Settings extends Component {
   }
 
   handleBackButton = () => {
-    this.props.navigation.navigate('MainView');
+    const { active } = this.state;
+
+    if (!active) {
+      this.props.navigation.navigate('MainView', { active: false });
+    } else {
+      this.props.navigation.navigate('MainView');
+    }
   };
 
   handleLogout() {

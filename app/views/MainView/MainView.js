@@ -9,16 +9,13 @@ import {
   FlatList,
   Animated,
   Alert,
-  TouchableHighlightBase,
   RefreshControl,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationEvents } from 'react-navigation';
 import { Header } from '../../components/Header';
 import { UpcomingRideCard, RequestedRideCard } from '../../components/Card';
-
 import styles from './styles';
-import moment from 'moment';
 import variables from '../../utils/variables';
 import API from '../../api/api';
 
@@ -43,11 +40,13 @@ export default class MainView extends Component {
       isNewRegistered: isNewRegistered,
       driverApproved: false,
       token: '',
+      driveractive: true,
     };
   }
 
   componentDidUpdate = prevProps => {
     if (prevProps.navigation !== this.props.navigation) {
+      console.log('updated');
       this.handleToken();
     }
   };
@@ -102,46 +101,49 @@ export default class MainView extends Component {
         console.log('after GETDRIVER: ', result);
         // const driverId = result.driver.id;
         // Check application_state is "accepted", background_check => true
-        const { id, application_state, background_check } = result.driver;
+        const {
+          id,
+          application_state,
+          background_check,
+          is_active,
+        } = result.driver;
         if (application_state === 'accepted' && background_check) {
-          API.getRides(token).then(result => {
-            console.log('all rides: ', result.rides);
-
-            //if undefined don't do this...
-
-            const rides = result.rides;
-
-            //grab all rides and sort by date then check for scheduled and approved rides and sort / save seperately
-
-            const ridesReady = rides.filter(ride => {
-              return new Date(ride.pick_up_time) >= new Date();
+          if (is_active) {
+            API.getRides(token).then(result => {
+              console.log('all rides: ', result.rides);
+              const rides = result.rides;
+              //grab all rides and sort by date then check for scheduled and approved rides and sort / save seperately
+              const ridesReady = rides.filter(ride => {
+                return new Date(ride.pick_up_time) >= new Date();
+              });
+              console.log('before state', ridesReady);
+              const myRides = ridesReady.filter(ride => ride.driver_id === id);
+              console.log('just my rides: ', myRides);
+              const scheduledRides = myRides.filter(
+                ride => ride.status === 'scheduled'
+              );
+              console.log('scheduled rides: ', scheduledRides);
+              const approvedRides = ridesReady.filter(
+                ride => ride.status === 'approved'
+              );
+              console.log('approved rides: ', approvedRides);
+              const withinAvailRides = this.withinMyAvail(
+                rides.filter(ride => ride.status === 'approved')
+              );
+              console.log('approved rides in my avail: ', withinAvailRides);
+              this.setState({
+                scheduledRides,
+                approvedRides,
+                withinAvailRides,
+                isLoading: false,
+                driverApproved: true,
+                driveractive: true,
+              });
+              console.log('driverApproved:', this.state.driverApproved);
             });
-            console.log('before state', ridesReady);
-
-            const myRides = ridesReady.filter(ride => ride.driver_id === id);
-            console.log('just my rides: ', myRides);
-            const scheduledRides = myRides.filter(
-              ride => ride.status === 'scheduled'
-            );
-            console.log('scheduled rides: ', scheduledRides);
-            const approvedRides = ridesReady.filter(
-              ride => ride.status === 'approved'
-            );
-            console.log('approved rides: ', approvedRides);
-            const withinAvailRides = this.withinMyAvail(
-              rides.filter(ride => ride.status === 'approved')
-            );
-            console.log('approved rides in my avail: ', withinAvailRides);
-
-            this.setState({
-              scheduledRides,
-              approvedRides,
-              withinAvailRides,
-              isLoading: false,
-              driverApproved: true,
-            });
-            console.log('driverApproved:', this.state.driverApproved);
-          });
+          } else {
+            this.setState({ isLoading: false, driveractive: false });
+          }
         } else {
           this.setState({
             isLoading: false,
@@ -554,9 +556,33 @@ export default class MainView extends Component {
         )
       : null;
   };
+  rendernonactivedriver = () => {
+    return (
+      <View
+        style={{
+          paddingTop: 60,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>Driver is not Active!</Text>
+        <Text style={{ marginBottom: 20, fontSize: 20 }}>
+          Go to Settings to change driver status!
+        </Text>
 
+        <TouchableOpacity
+          onPress={this.navigateToSettings}
+          style={styles.gobackButton}
+        >
+          <Text style={styles.buttonTitle}>Settings</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   render() {
     const { isLoading } = this.state;
+    // const driveractive= false;
+    console.log('driveractive', this.state.driveractive);
     return (
       <View style={styles.container}>
         <NavigationEvents onDidFocus={() => this.handleToken()} />
@@ -565,32 +591,41 @@ export default class MainView extends Component {
         {isLoading ? (
           this.renderLoader()
         ) : (
-          <ScrollView
-            scrollsToTop
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: variables.sizes.padding }}
-            refreshControl={
-              <RefreshControl
-                refreshing={isLoading}
-                onRefresh={this.ridesRequests}
-              />
-            }
-          >
-            {this.state.driverApproved ? (
-              <>
-                {this.renderUpcomingRides()}
-                {this.renderFilteredRides()}
-              </>
+          <View>
+            {!this.state.driveractive ? (
+              this.rendernonactivedriver()
             ) : (
-              console.log('NOthing')
+              <ScrollView
+                scrollsToTop
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  paddingBottom: variables.sizes.padding,
+                  height: '100%',
+                }}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isLoading}
+                    onRefresh={this.ridesRequests}
+                  />
+                }
+              >
+                {this.state.driverApproved ? (
+                  <>
+                    {this.renderUpcomingRides()}
+                    {this.renderFilteredRides()}
+                  </>
+                ) : (
+                  console.log('NOthing')
+                )}
+                <View style={styles.statusBar}>
+                  {!this.state.driverApproved ? (
+                    <Text>Waiting to be approved by the administrators</Text>
+                  ) : null}
+                </View>
+                {this.state.showAllRides && this.renderRequestedRides()}
+              </ScrollView>
             )}
-            <View style={styles.statusBar}>
-              {!this.state.driverApproved ? (
-                <Text>Waiting to be approved by the administrators</Text>
-              ) : null}
-            </View>
-            {this.state.showAllRides && this.renderRequestedRides()}
-          </ScrollView>
+          </View>
         )}
       </View>
     );
