@@ -503,8 +503,8 @@ class Settings extends Component {
         />
         <ScrollView nestedScrollEnabled={true}>
           <View>
-            <View style={styles.settingSection} stickyHeaderIndices={[0]}>
-              <View style={styles.section}>
+            <View style={styles.section}>
+              <View style={styles.settingSection} stickyHeaderIndices={[0]}>
                 <View style={styles.sectionTitleContainer}>
                   <Text style={styles.sectionTitle}>Driver Information</Text>
                   <View style={''}>
@@ -588,6 +588,14 @@ class Settings extends Component {
                     />
                   </View>
                 </View>
+
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('ChangePassword')
+                  }
+                >
+                  <Text>Change Password</Text>
+                </TouchableOpacity>
               </View>
 
               <View style={styles.section}>
@@ -597,7 +605,7 @@ class Settings extends Component {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <View style={styles.notSureYet}>
+                  <View style={styles.rowContainer}>
                     <View>
                       <Text style={styles.inputTitle}>Active </Text>
                       <Text style={styles.notificationDescription}>
@@ -612,7 +620,7 @@ class Settings extends Component {
                       />
                     </View>
                   </View>
-                  <View style={[styles.notSureYet, { paddingTop: 15 }]}>
+                  <View style={[styles.rowContainer, { paddingTop: 15 }]}>
                     <TouchableOpacity
                       style={styles.logoutButton}
                       onPress={

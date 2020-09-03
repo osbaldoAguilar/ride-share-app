@@ -12,6 +12,7 @@ import RideView from './RideView/RideView';
 import DriverScheduleView from './DriverScheduleView/DriverScheduleView';
 import RequestedRidesDetails from './RequestedRidesDetails/RequestedRidesDetails';
 import Settings from './settings/settingsScreen';
+import ChangePassword from './ChangePassword/ChangePassword';
 
 export {
   Welcome,
@@ -27,4 +28,5 @@ export {
   DriverScheduleView,
   RequestedRidesDetails,
   Settings,
+  ChangePassword,
 };

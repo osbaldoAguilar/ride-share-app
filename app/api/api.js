@@ -11,6 +11,7 @@ import {
   ORGANIZATIONS,
   LOCATIONS,
   DRIVER,
+  CHANGEPASSWORD,
 } from '../utils/urls';
 import apiWrapper from './apiWrapper';
 //TODO get the ride id not the rider id from the API to accept the correct response
@@ -35,11 +36,30 @@ export default {
     });
   },
   passwordChange(token) {
+    //reset password when user is created by admin
     console.log('data wihthin passwordReset', Token);
     return apiWrapper({
       path: DRIVER,
-      params:`${PASSWORDCHANGE}`,
+      params: `${PASSWORDCHANGE}`,
       method: 'PUT',
+      token,
+    });
+  },
+  changePassword(token, password, newPassword, confirmPassword) {
+    console.log('called change password api', token);
+    const userData = {
+      driver: {
+        old_password: password,
+        new_password: newPassword,
+        password_confirmation: confirmPassword,
+      },
+    };
+    console.log('data', userData);
+    return apiWrapper({
+      path: DRIVER,
+      params: `${CHANGEPASSWORD}`,
+      body: userData,
+      method: 'POST',
       token,
     });
   },
@@ -71,7 +91,7 @@ export default {
       token,
     });
   },
-  //////////////////////////////////
+
   acceptRide(id, token) {
     return apiWrapper({
       path: RIDES,
