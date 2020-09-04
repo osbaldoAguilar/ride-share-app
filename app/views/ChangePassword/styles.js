@@ -53,6 +53,13 @@ export default StyleSheet.create({
     marginTop: 3,
     fontSize: 20,
   },
+  passwordMessage: {
+    color: '#C0C0C0',
+    marginLeft: 15,
+    marginRight: 15,
+    paddingRight: 5,
+    paddingLeft: 5,
+  },
   errorMessage: {
     paddingTop: 5,
     paddingLeft: 15,
@@ -63,5 +70,7 @@ export default StyleSheet.create({
   footer: {
     marginTop: 20,
     paddingBottom: Platform.OS === 'ios' ? getBottomSpace() : 0,
+    paddingRight: 10,
+    paddingLeft: 10,
   },
 });

@@ -71,7 +71,6 @@ class ChangePassword extends Component {
 
   handlePasswordChange = async () => {
     const { currentPassword, newPassword, confirmPassword } = this.state;
-
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('token');
     const parsedValue = JSON.parse(token);
@@ -83,7 +82,6 @@ class ChangePassword extends Component {
       newPassword,
       confirmPassword
     ).then(res => {
-      console.log('result from api', res);
       if (res.error) {
         this.setState({ error: res.error });
       } else {
@@ -92,6 +90,7 @@ class ChangePassword extends Component {
       }
     });
   };
+
   render() {
     const { matchingPassword, validPassword } = this.state;
 
@@ -117,11 +116,10 @@ class ChangePassword extends Component {
                 this.newPasswordRef.focus();
               }}
               blurOnSubmit={false}
-              style={styles.saeInputAlt} //way for use to tell if password is correct
+              style={styles.saeInputAlt}
               inputStyle={styles.saeTextAlt}
             />
 
-            {/* Input for Volunteer Driver's Last Name */}
             <Text style={styles.labelStyleAlt}>New Password:</Text>
             <TextInput
               onChangeText={text =>
@@ -129,7 +127,7 @@ class ChangePassword extends Component {
                   this.validatePassword()
                 )
               }
-              secureTextEntry={true}
+              secureTextEntry
               onFocus={() => this.beginValidationError()}
               placeholderTextColor="#C0C0C0"
               placeholder="New Password"
@@ -147,7 +145,6 @@ class ChangePassword extends Component {
               inputStyle={styles.saeTextAlt}
             />
 
-            {/* Input for Volunteer Driver's Last Name */}
             <Text style={styles.labelStyleAlt}>Confirm Password:</Text>
             <TextInput
               onChangeText={text =>
@@ -164,7 +161,8 @@ class ChangePassword extends Component {
               secureTextEntry={true}
               returnKeyType={'next'}
               onSubmitEditing={() => {
-                this.phone.focus();
+                Keyboard.dismiss();
+                this.handlePasswordChange();
               }}
               blurOnSubmit={false}
               style={
@@ -173,20 +171,16 @@ class ChangePassword extends Component {
               inputStyle={styles.saeTextAlt}
             />
 
-            <Text style={{ color: '#C0C0C0', marginLeft: 15, paddingLeft: 5 }}>
+            <Text style={styles.passwordMessage}>
               Password must be 8 characters long and contain UPPER CASE, lower
               case, number, and a symbol (e.g !@#$%)
             </Text>
             {this.state.error != '' && (
-              <View
-                style={{ paddingLeft: 10, paddingRight: 10, paddingTop: 10 }}
-              >
+              <View style={{ marginLeft: 10, marginRight: 10, paddingTop: 10 }}>
                 <Text style={styles.errorMessage}>{this.state.error}</Text>
               </View>
             )}
-            <View
-              style={[styles.footer, { paddingRight: 10, paddingLeft: 10 }]}
-            >
+            <View style={styles.footer}>
               <CalendarButton
                 title="Continue"
                 onPress={
