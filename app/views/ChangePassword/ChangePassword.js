@@ -54,21 +54,6 @@ class ChangePassword extends Component {
     }
   };
 
-  beginValidationError = () => {
-    const { newPassword } = this.state;
-    if (newPassword.length === 0) {
-      this.setState({ validPassword: false });
-    }
-  };
-
-  beginValidationMatchError = () => {
-    const { confirmPassword } = this.state;
-    console.log(confirmPassword);
-    if (confirmPassword.length === 0) {
-      this.setState({ matchingPassword: false });
-    }
-  };
-
   handlePasswordChange = async () => {
     const { currentPassword, newPassword, confirmPassword } = this.state;
     const { navigation } = this.props;
@@ -128,7 +113,6 @@ class ChangePassword extends Component {
                 )
               }
               secureTextEntry
-              onFocus={() => this.beginValidationError()}
               placeholderTextColor="#C0C0C0"
               placeholder="New Password"
               ref={input => {
@@ -152,7 +136,6 @@ class ChangePassword extends Component {
                   this.validateMatch()
                 )
               }
-              onFocus={() => this.beginValidationMatchError()}
               placeholderTextColor="#C0C0C0"
               placeholder="Confrim Password"
               ref={input => {

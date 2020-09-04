@@ -13,9 +13,9 @@ import Email from 'react-native-vector-icons/MaterialCommunityIcons';
 import Radius from 'react-native-vector-icons/MaterialCommunityIcons';
 import Pencil from 'react-native-vector-icons/MaterialCommunityIcons';
 import Lock from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Phone from 'react-native-vector-icons/AntDesign';
 import { AddButton, CalendarButton } from '../../components/Button';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import User from 'react-native-vector-icons/SimpleLineIcons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -510,17 +510,9 @@ class Settings extends Component {
               <View style={styles.settingSection} stickyHeaderIndices={[0]}>
                 <View style={styles.sectionTitleContainer}>
                   <Text style={styles.sectionTitle}>Driver Information</Text>
-                  <View style={{ flexDirection: 'row', paddingRight: 10 }}>
+                  <View style={''}>
                     <TouchableOpacity
-                      style={{ paddingTop: 5, paddingRight: 5 }}
-                      onPress={() =>
-                        this.props.navigation.navigate('ChangePassword')
-                      }
-                    >
-                      <Lock name="lock" size={25} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{ paddingTop: 5 }}
+                      style={{ marginRight: 15, marginTop: 5 }}
                       onPress={this.toggleEdit}
                     >
                       <Pencil color="white" name="pencil" size={25}></Pencil>
@@ -598,6 +590,23 @@ class Settings extends Component {
                       editable={this.state.editable}
                     />
                   </View>
+                </View>
+                <View style={styles.inputContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('ChangePassword')
+                    }
+                  >
+                    <Text
+                      style={{
+                        paddingLeft: 5,
+                        fontSize: 14,
+                        color: '#475c67',
+                      }}
+                    >
+                      Change Password
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
 
