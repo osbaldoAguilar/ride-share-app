@@ -37,7 +37,7 @@ export default StyleSheet.create({
     fontSize: 18,
     paddingLeft: 30,
     color: 'red',
-    borderBottomColor: 'red',
+    borderBottomColor: '#2F2F2F',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   saeTextAlt: {

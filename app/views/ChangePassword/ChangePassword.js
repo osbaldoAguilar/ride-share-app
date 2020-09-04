@@ -5,6 +5,7 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import styles from './styles';
 import BackHeader from '../../components/Header/BackHeader';
@@ -33,13 +34,11 @@ class ChangePassword extends Component {
   validatePassword = () => {
     const { newPassword } = this.state;
 
-    console.log('new passowrd', newPassword);
     if (
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
         newPassword
       )
     ) {
-      console.log('pass');
       this.setState({ validPassword: true });
     } else {
       this.setState({ validPassword: false });
@@ -48,9 +47,6 @@ class ChangePassword extends Component {
 
   validateMatch = () => {
     const { newPassword, confirmPassword } = this.state;
-    console.log('called valid match');
-    console.log('new password', newPassword);
-    console.log('confim password', confirmPassword);
     if (newPassword === confirmPassword) {
       this.setState({ matchingPassword: true });
     } else {
@@ -74,33 +70,27 @@ class ChangePassword extends Component {
   };
 
   handlePasswordChange = async () => {
-    const {
-      currentPassword,
-      newPassword,
-      confirmPassword,
-      validPassword,
-      matchingPassword,
-    } = this.state;
+    const { currentPassword, newPassword, confirmPassword } = this.state;
+
+    const { navigation } = this.props;
     const token = await AsyncStorage.getItem('token');
     const parsedValue = JSON.parse(token);
     const parsedToken = parsedValue.token;
 
-    //make sure data isn't blank
-    console.log('validPassword', validPassword);
-    console.log('matchingPassword', matchingPassword);
-    console.log('length', currentPassword.length);
-    if (currentPassword.length > 0 && validPassword && matchingPassword) {
-      API.changePassword(
-        parsedToken,
-        currentPassword,
-        newPassword,
-        confirmPassword
-      ).then(res => {
-        console.log('result from api', res);
-      });
-    } else {
-      this.setState({ error: 'NO' });
-    }
+    API.changePassword(
+      parsedToken,
+      currentPassword,
+      newPassword,
+      confirmPassword
+    ).then(res => {
+      console.log('result from api', res);
+      if (res.error) {
+        this.setState({ error: res.error });
+      } else {
+        Alert.alert('Password Updated');
+        navigation.navigate('Settings');
+      }
+    });
   };
   render() {
     const { matchingPassword, validPassword } = this.state;
@@ -183,9 +173,9 @@ class ChangePassword extends Component {
               inputStyle={styles.saeTextAlt}
             />
 
-            <Text style={{ color: '#C0C0C0' }}>
+            <Text style={{ color: '#C0C0C0', marginLeft: 15, paddingLeft: 5 }}>
               Password must be 8 characters long and contain UPPER CASE, lower
-              case, symbol (e.g !@#$%)
+              case, number, and a symbol (e.g !@#$%)
             </Text>
             {this.state.error != '' && (
               <View
