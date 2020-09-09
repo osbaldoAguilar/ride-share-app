@@ -32,14 +32,6 @@ export default StyleSheet.create({
     borderBottomColor: '#2F2F2F',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  saeInputAltWrong: {
-    marginHorizontal: 16,
-    fontSize: 18,
-    paddingLeft: 30,
-    color: 'red',
-    borderBottomColor: '#2F2F2F',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
   saeTextAlt: {
     fontSize: 20,
     fontWeight: 'bold',

@@ -77,8 +77,6 @@ class ChangePassword extends Component {
   };
 
   render() {
-    const { matchingPassword, validPassword } = this.state;
-
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
@@ -123,9 +121,7 @@ class ChangePassword extends Component {
                 this.confirmPasswordRef.focus();
               }}
               blurOnSubmit={false}
-              style={
-                validPassword ? styles.saeInputAlt : styles.saeInputAltWrong
-              }
+              style={styles.saeInputAlt}
               inputStyle={styles.saeTextAlt}
             />
 
@@ -148,9 +144,7 @@ class ChangePassword extends Component {
                 this.handlePasswordChange();
               }}
               blurOnSubmit={false}
-              style={
-                matchingPassword ? styles.saeInputAlt : styles.saeInputAltWrong
-              }
+              style={styles.saeInputAlt}
               inputStyle={styles.saeTextAlt}
             />
 
@@ -166,10 +160,7 @@ class ChangePassword extends Component {
             <View style={styles.footer}>
               <CalendarButton
                 title="Continue"
-                onPress={
-                  //pass the data (user inputs including orgID and radius), nav info for redirect to handleUserInput fx above
-                  this.handlePasswordChange
-                }
+                onPress={this.handlePasswordChange}
               />
             </View>
           </View>
