@@ -16,6 +16,7 @@ import {
   RegisterAvailability,
   ForgotPassword,
   Welcome,
+  ChangePassword,
 } from '../views';
 import LocationForm from '../components/Forms/LocationForm';
 import RegisterAvailabilityForm from '../components/Forms/RegisterAvailabilityForm';
@@ -52,6 +53,12 @@ const MainViewStack = createStackNavigator(
       navigationOptions: {
         header: () => null,
         gesturesEnabled: false,
+      },
+    },
+    ChangePassword: {
+      screen: ChangePassword,
+      navigationOptions: {
+        header: () => null,
       },
     },
     RideView: {

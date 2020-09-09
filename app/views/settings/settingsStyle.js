@@ -7,7 +7,7 @@ export default StyleSheet.create({
     backgroundColor: '#fcfcf6',
   },
   settingSection: {
-    padding: 10,
+    padding: 5,
     borderColor: '#b1c1c8',
     borderRadius: 10,
     borderWidth: 0.5,
@@ -37,7 +37,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  notSureYet: {
+  rowContainer: {
     flexDirection: 'row',
     paddingTop: 5,
   },

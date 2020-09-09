@@ -14,7 +14,6 @@ import BottomModal from '../Modal/BottomModal';
 import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 class RegisterDriverForm extends React.Component {
   constructor(props) {
     super(props);
@@ -229,7 +228,7 @@ class RegisterDriverForm extends React.Component {
                 }}
                 returnKeyType={'next'}
                 onSubmitEditing={() => {
-                  this.street.focus();
+                  this.email.focus();
                 }}
                 blurOnSubmit={false}
                 style={[styles.saeInputAlt]}

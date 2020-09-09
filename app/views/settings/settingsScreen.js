@@ -11,6 +11,9 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import Email from 'react-native-vector-icons/MaterialCommunityIcons';
 import Radius from 'react-native-vector-icons/MaterialCommunityIcons';
+import Pencil from 'react-native-vector-icons/MaterialCommunityIcons';
+import Lock from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Phone from 'react-native-vector-icons/AntDesign';
 import { AddButton, CalendarButton } from '../../components/Button';
 
@@ -22,7 +25,7 @@ import API from '../../api/api';
 import { VehicleCard, LocationCard } from '../../components/Card';
 
 import Animated from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { SafeAreaView } from 'react-navigation';
 
 class Settings extends Component {
@@ -503,8 +506,8 @@ class Settings extends Component {
         />
         <ScrollView nestedScrollEnabled={true}>
           <View>
-            <View style={styles.settingSection} stickyHeaderIndices={[0]}>
-              <View style={styles.section}>
+            <View style={styles.section}>
+              <View style={styles.settingSection} stickyHeaderIndices={[0]}>
                 <View style={styles.sectionTitleContainer}>
                   <Text style={styles.sectionTitle}>Driver Information</Text>
                   <View style={''}>
@@ -512,7 +515,7 @@ class Settings extends Component {
                       style={{ marginRight: 15, marginTop: 5 }}
                       onPress={this.toggleEdit}
                     >
-                      <Icon color="white" name="pencil" size={25}></Icon>
+                      <Pencil color="white" name="pencil" size={25}></Pencil>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -588,6 +591,23 @@ class Settings extends Component {
                     />
                   </View>
                 </View>
+                <View style={styles.inputContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.navigate('ChangePassword')
+                    }
+                  >
+                    <Text
+                      style={{
+                        paddingLeft: 5,
+                        fontSize: 14,
+                        color: '#475c67',
+                      }}
+                    >
+                      Change Password
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <View style={styles.section}>
@@ -597,7 +617,7 @@ class Settings extends Component {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <View style={styles.notSureYet}>
+                  <View style={styles.rowContainer}>
                     <View>
                       <Text style={styles.inputTitle}>Active </Text>
                       <Text style={styles.notificationDescription}>
@@ -612,7 +632,7 @@ class Settings extends Component {
                       />
                     </View>
                   </View>
-                  <View style={[styles.notSureYet, { paddingTop: 15 }]}>
+                  <View style={[styles.rowContainer, { paddingTop: 15 }]}>
                     <TouchableOpacity
                       style={styles.logoutButton}
                       onPress={
