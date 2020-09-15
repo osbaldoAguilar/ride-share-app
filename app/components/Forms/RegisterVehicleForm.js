@@ -169,7 +169,10 @@ class RegisterVehicleForm extends React.Component {
 
     return (
       <ScrollView>
-        <View onStartShouldSetResponder={() => true}>
+        <View
+          onStartShouldSetResponder={() => true}
+          style={{ paddingLeft: 5, paddingRight: 5 }}
+        >
           <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
               <Text style={styles.sectionTitle}>
@@ -310,21 +313,10 @@ class RegisterVehicleForm extends React.Component {
           <DatePickerView
             value={new Date() || new Date(insurance_start)}
             setDate={this.setStartDate}
+            title="Start Date"
+            placeholder="Start Date"
+            mode="date"
           />
-
-          {this.props.navigation.state.params.isEditing ? (
-            <Text style={styles.displaySelection}>
-              Selected date:
-              {moment(insurance_start).format('MMMM D, YYYY')}
-            </Text>
-          ) : (
-            <Text style={styles.displaySelection}>
-              Selected date:{' '}
-              {moment(this.state.insurStartDate).format('MMMM D, YYYY')}
-            </Text>
-          )}
-
-          <Text />
 
           <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
@@ -337,21 +329,10 @@ class RegisterVehicleForm extends React.Component {
           <DatePickerView
             value={new Date() || new Date(insurance_stop)}
             setDate={this.setEndDate}
+            title="End Date"
+            placeholder="End Date"
+            mode="date"
           />
-
-          {this.props.navigation.state.params.isEditing ? (
-            <Text style={styles.displaySelection}>
-              Selected date:
-              {moment(insurance_stop).format('MMMM D, YYYY')}
-            </Text>
-          ) : (
-            <Text style={styles.displaySelection}>
-              Selected date:{' '}
-              {moment(this.state.insurEndDate).format('MMMM D, YYYY')}
-            </Text>
-          )}
-
-          <Text />
 
           {this.state.error !== '' && (
             <View>

@@ -8,7 +8,8 @@ export default StyleSheet.create({
     marginVertical: 20,
   },
   wrapper: {
-    marginHorizontal: variables.sizes.margin,
+    padding: 5,
+    paddingTop: 10,
   },
   title: {
     fontWeight: 'bold',
@@ -82,16 +83,10 @@ export default StyleSheet.create({
     marginTop: 5,
     paddingBottom: 15,
     textAlign: 'center',
-    borderBottomColor: '#2F2F2F',
-    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   mainContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1EAA70',
-    height: Platform.OS == 'ios' ? 120 : 80,
-    marginTop: Platform.OS == 'android' ? 0 : 0,
+    flex: 1,
+    backgroundColor: '#fff',
   },
   componentsContainer: {
     paddingTop: Platform.OS == 'ios' ? 55 : 0,
@@ -122,14 +117,13 @@ export default StyleSheet.create({
     borderRadius: 5,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
   },
   sectionTitle: {
     paddingLeft: 15,
     paddingRight: 15,
     paddingTop: 5,
     paddingBottom: 5,
-    fontSize: 20,
+    fontSize: 18,
     color: '#ffffff',
   },
   dropdownTextStyle: {
@@ -137,7 +131,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     display: 'flex',
   },
- 
+
   dropdownStyle: {
     width: '100%',
   },
