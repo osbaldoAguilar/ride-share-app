@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, View, TouchableOpacity, Text } from 'react-native';
 import { Appearance } from 'react-native-appearance';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -29,10 +29,29 @@ const DatePickerView = ({ setDate, mode, title, dateProp, placeholder }) => {
     }
   };
 
+  useEffect(() => {
+    console.log('date prop beofre if', dateProp);
+    if (dateProp) {
+      if (mode === 'date') {
+        setValue(moment(dateProp).format('MMMM DD, YYYY'));
+      } else {
+        setValue(
+          moment(dateProp)
+            .local()
+            .format('h:mm A')
+        );
+      }
+    }
+  }, [value]);
+
   // If is a string means comes from the backend, we should convert it to a Date.
   let date = dateProp;
+  console.log('date prop true or false', date);
   if (typeof dateProp === 'string') {
     date = new Date(dateProp);
+  }
+  if (!dateProp) {
+    date = new Date();
   }
 
   const colorScheme = Appearance.getColorScheme();

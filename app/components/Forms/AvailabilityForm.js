@@ -35,12 +35,12 @@ class AvailabilityForm extends React.Component {
       isRecurring: isNewItem ? false : params.item.isRecurring,
 
       availData: {
-        startDate: isNewItem ? new Date() : params.item.startDate,
+        startDate: isNewItem ? null : params.item.startDate,
         endDate: isNewItem
-          ? new Date()
+          ? {}
           : moment.utc(params.item.endDate).format('llll'),
-        startTime: isNewItem ? new Date() : params.item.startTime,
-        endTime: isNewItem ? new Date() : params.item.endTime,
+        startTime: isNewItem ? null : params.item.startTime,
+        endTime: isNewItem ? null : params.item.endTime,
       },
       locationModal: false,
       locationData: [],
