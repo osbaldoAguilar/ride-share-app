@@ -42,13 +42,13 @@ const DatePickerView = ({ setDate, mode, title, dateProp, placeholder }) => {
         );
       }
     }
-  }, [value]);
+  }, [dateProp]);
 
   // If is a string means comes from the backend, we should convert it to a Date.
   let date = dateProp;
   console.log('date prop true or false', date);
   if (typeof dateProp === 'string') {
-    date = new Date(dateProp);
+    date = new Date(dateProp.replace(/-/g, '/'));
   }
   if (!dateProp) {
     date = new Date();

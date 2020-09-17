@@ -25,8 +25,8 @@ class RegisterVehicleForm extends React.Component {
       car_plate: '',
       seat_belt_num: '',
       insurance_provider: '',
-      insurance_start: '',
-      insurance_stop: '',
+      insurance_start: null,
+      insurance_stop: null,
       error: '',
     };
   }
@@ -310,13 +310,15 @@ class RegisterVehicleForm extends React.Component {
             </View>
           </View>
 
-          <DatePickerView
-            value={new Date() || new Date(insurance_start)}
-            setDate={this.setStartDate}
-            title="Start Date"
-            placeholder="Start Date"
-            mode="date"
-          />
+          <View style={{ marginHorizontal: 16, paddingBottom: 5 }}>
+            <DatePickerView
+              dateProp={insurance_start}
+              setDate={this.setStartDate}
+              title="Start Date"
+              placeholder="Start Date"
+              mode="date"
+            />
+          </View>
 
           <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
@@ -326,13 +328,15 @@ class RegisterVehicleForm extends React.Component {
             </View>
           </View>
 
-          <DatePickerView
-            value={new Date() || new Date(insurance_stop)}
-            setDate={this.setEndDate}
-            title="End Date"
-            placeholder="End Date"
-            mode="date"
-          />
+          <View style={{ marginHorizontal: 16, paddingBottom: 5 }}>
+            <DatePickerView
+              dateProp={insurance_stop}
+              setDate={this.setEndDate}
+              title="End Date"
+              placeholder="End Date"
+              mode="date"
+            />
+          </View>
 
           {this.state.error !== '' && (
             <View>
