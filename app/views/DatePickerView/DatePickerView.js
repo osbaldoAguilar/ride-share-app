@@ -48,7 +48,8 @@ const DatePickerView = ({ setDate, mode, title, dateProp, placeholder }) => {
   let date = dateProp;
   console.log('date prop true or false', date);
   if (typeof dateProp === 'string') {
-    date = new Date(dateProp.replace(/-/g, '/'));
+    console.log('is a string');
+    date = new Date(dateProp.replace(/-/g, '/').replace(/T.+/, ''));
   }
   if (!dateProp) {
     date = new Date();
