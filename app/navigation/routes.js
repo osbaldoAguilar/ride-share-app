@@ -52,7 +52,6 @@ const MainViewStack = createStackNavigator(
       screen: Settings,
       navigationOptions: {
         header: () => null,
-        gesturesEnabled: false,
       },
     },
     ChangePassword: {
