@@ -1,7 +1,7 @@
-import {Platform, StyleSheet, Dimensions} from 'react-native';
+import { Platform, StyleSheet, Dimensions } from 'react-native';
 import variables from '../../../utils/variables';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   cardContainer: {
@@ -16,7 +16,7 @@ export default StyleSheet.create({
   shadow: {
     shadowColor: '#000',
     shadowOpacity: 0.15,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowRadius: 13,
     elevation: Platform.OS === 'ios' ? 0 : 5,
   },
@@ -29,8 +29,8 @@ export default StyleSheet.create({
     fontSize: 14,
     lineHeight: 28,
   },
-  distance:{
-      color: '#475c67',
+  distance: {
+    color: '#475c67',
   },
   location: {
     color: '#2F2F2F',
@@ -39,8 +39,5 @@ export default StyleSheet.create({
   noteContainer: {
     flex: 3,
     justifyContent: 'center',
-    alignItems: 'center',
-
-
   },
 });

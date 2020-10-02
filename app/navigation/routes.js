@@ -19,7 +19,7 @@ import {
   ChangePassword,
 } from '../views';
 import LocationForm from '../components/Forms/LocationForm';
-import RegisterAvailabilityForm from '../components/Forms/RegisterAvailabilityForm';
+import AvailabilityForm from '../components/Forms/AvailabilityForm';
 // import VehicleSettings from '../views/settings/VehicleSettings'
 
 const MainViewStack = createStackNavigator(
@@ -37,7 +37,7 @@ const MainViewStack = createStackNavigator(
       },
     },
     RegisterAvailabilityForm: {
-      screen: RegisterAvailabilityForm,
+      screen: AvailabilityForm,
       navigationOptions: {
         header: () => null,
       },
@@ -52,7 +52,6 @@ const MainViewStack = createStackNavigator(
       screen: Settings,
       navigationOptions: {
         header: () => null,
-        gesturesEnabled: false,
       },
     },
     ChangePassword: {

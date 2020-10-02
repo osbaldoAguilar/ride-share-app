@@ -109,6 +109,7 @@ export default class MainView extends Component {
         } = result.driver;
         if (application_state === 'accepted' && background_check) {
           if (is_active) {
+            // pass date to query rides from starting date
             API.getRides(token).then(result => {
               console.log('all rides: ', result.rides);
               const rides = result.rides;
@@ -269,7 +270,7 @@ export default class MainView extends Component {
       );
     } else {
       return (
-        <View style={{ flex: 2 }}>
+        <View style={{ flex: 1 }}>
           <View style={styles.titleWrapper}>
             <View style={{ alignItems: 'flex-start' }}>
               <Text style={styles.subTitle}>Upcoming Schedule</Text>
@@ -283,6 +284,7 @@ export default class MainView extends Component {
             ) : null}
           </View>
           <View style={styles.seperator} />
+
           <FlatList
             horizontal
             pagingEnabled
@@ -588,45 +590,46 @@ export default class MainView extends Component {
         <NavigationEvents onDidFocus={() => this.handleToken()} />
         <StatusBar barStyle="light-content" backgroundColor="#1EAA70" />
         <Header onPress={this.navigateToSettings} title={'Welcome'} />
-        {isLoading ? (
-          this.renderLoader()
-        ) : (
-          <View>
-            {!this.state.driveractive ? (
-              this.rendernonactivedriver()
-            ) : (
-              <ScrollView
-                scrollsToTop
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  paddingBottom: variables.sizes.padding,
-                  height: '100%',
-                }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={isLoading}
-                    onRefresh={this.ridesRequests}
-                  />
-                }
-              >
-                {this.state.driverApproved ? (
-                  <>
-                    {this.renderUpcomingRides()}
-                    {this.renderFilteredRides()}
-                  </>
-                ) : (
-                  console.log('NOthing')
-                )}
-                <View style={styles.statusBar}>
-                  {!this.state.driverApproved ? (
-                    <Text>Waiting to be approved by the administrators</Text>
-                  ) : null}
+        <ScrollView
+          scrollsToTop
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: variables.sizes.padding,
+          }}
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={this.ridesRequests}
+            />
+          }
+        >
+          {isLoading ? (
+            this.renderLoader()
+          ) : (
+            <View>
+              {!this.state.driveractive ? (
+                this.rendernonactivedriver()
+              ) : (
+                <View>
+                  {this.state.driverApproved ? (
+                    <View>
+                      {this.renderUpcomingRides()}
+                      {this.renderFilteredRides()}
+                    </View>
+                  ) : (
+                    console.log('NOthing')
+                  )}
+                  <View style={styles.statusBar}>
+                    {!this.state.driverApproved ? (
+                      <Text>Waiting to be approved by the administrators</Text>
+                    ) : null}
+                  </View>
+                  {this.state.showAllRides && this.renderRequestedRides()}
                 </View>
-                {this.state.showAllRides && this.renderRequestedRides()}
-              </ScrollView>
-            )}
-          </View>
-        )}
+              )}
+            </View>
+          )}
+        </ScrollView>
       </View>
     );
   }

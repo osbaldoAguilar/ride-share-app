@@ -10,7 +10,7 @@ const UpcomingRideCard = ({
   onPress,
   date,
   pickupLocation,
-  dropoffLocation
+  dropoffLocation,
 }) => (
   <View style={[styles.card, styles.shadow]}>
     <Block row space="evenly">
@@ -19,6 +19,7 @@ const UpcomingRideCard = ({
       <Text style={styles.date}>{moment.parseZone(date).format('h:mm A')}</Text>
     </Block>
     <Block color="gray3" style={styles.hLine} />
+
     <Block row center>
       <Badge color="rgba(30,170,112,0.2)" size={14} style={{ marginRight: 8 }}>
         <Badge color="#1EAA70" size={8} />

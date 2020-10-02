@@ -128,7 +128,10 @@ class LocationForm extends Component {
           disable={false}
         />
         <ScrollView>
-          <View style={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5 }}>
+          <View
+            style={{ paddingTop: 10, paddingLeft: 5, paddingRight: 5 }}
+            onStartShouldSetResponder={() => true}
+          >
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionHeaderText}>Address</Text>
             </View>
