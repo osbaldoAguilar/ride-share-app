@@ -72,10 +72,7 @@ const InitOverviewCard = ({
         {/* <ScrollView> */}
         <Block>
           <Text style={styles.title}>Reason For Ride</Text>
-          <Text style={styles.noteText}>
-            {note}
-            {}
-          </Text>
+          <Text style={styles.noteText}>{note}</Text>
         </Block>
       </Block>
     </View>

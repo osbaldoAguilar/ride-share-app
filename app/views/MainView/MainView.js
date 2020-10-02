@@ -109,6 +109,7 @@ export default class MainView extends Component {
         } = result.driver;
         if (application_state === 'accepted' && background_check) {
           if (is_active) {
+            // pass date to query rides from starting date
             API.getRides(token).then(result => {
               console.log('all rides: ', result.rides);
               const rides = result.rides;
