@@ -9,14 +9,13 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fcfcf6',
   },
 });
 
 const Container = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <View style={styles.container} >
-      {children}
-    </View>
+    <View style={styles.container}>{children}</View>
   </TouchableWithoutFeedback>
 );
 

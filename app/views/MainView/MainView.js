@@ -603,9 +603,7 @@ export default class MainView extends Component {
             />
           }
         >
-          {isLoading ? (
-            this.renderLoader()
-          ) : (
+          {isLoading ? null : (
             <View>
               {!this.state.driveractive ? (
                 this.rendernonactivedriver()
