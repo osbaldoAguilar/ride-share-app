@@ -58,6 +58,7 @@ const InitOverviewCard = ({
         <Text style={styles.date}>{moment(date).format('h:mm A')}</Text>
       </Block>
       <Block row center>
+      <Badge color="#1EAA70" size={5.5} style={{ marginLeft: 1}} />
       <Icon
                 name="home"
                 size={24}
@@ -71,22 +72,21 @@ const InitOverviewCard = ({
         </TouchableOpacity>
       </Block>
      
-      <Block row center style={{ paddingVertical: 4 }}>
-              <Badge color="#1EAA70" size={5.5} style={{ marginLeft: 10}} />
-            </Block>
-            <Block row center>
-      <Icon
+     
+            <Block row center style={{ marginLeft:6}} >
+            
+      <Icon 
                 name="directions-car"
                 size={24}
                 color="#475c67"
                 type="materialIcons"
+                
                
               />
               </Block>
-              <Block row center style={{ paddingVertical: 4 }}>
-              <Badge color="#FF4957" size={5.5} style={{ marginLeft: 10}} />
-            </Block>
+           
       <Block row center>
+      <Badge color="#FF4957" size={5.5} style={{ marginLeft: 1}} />
       <Icon
                 name="home"
                 size={24}
