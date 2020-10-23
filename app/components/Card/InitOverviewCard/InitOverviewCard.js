@@ -188,13 +188,18 @@ const InitOverviewCard = ({
               <Text spacing={0.5} style={styles.location}>
                 {dropoffAddress}
               </Text>
+       
             </Block>
           </Block>
+          
         ) : (
-          <Text style={styles.noteText}>
-            Approximate Distances will be displayed when you have accepted the
-            Ride
-          </Text>
+          <Text spacing={0.5} style={(styles.location, styles.distance)}>
+          {pickup_to_dropoff_distance}Approximate distance will be displayed after accepting the ride
+        </Text>
+              
+         
+          
+          
         )}
       </Block>
     </View>

@@ -324,6 +324,9 @@ export default class MainView extends Component {
     date.toString();
     const name = item.riderName;
     const reason = item.reason;
+    const default_to_pickup_distance=item.default_to_pickup_distance;
+    const pickup_to_dropoff_distance=item.pickup_to_dropoff_distance;
+    console.log("data item",item)
     return (
       <RequestedRideCard
         key={item.driver_id}
@@ -337,6 +340,8 @@ export default class MainView extends Component {
             date,
             name,
             reason,
+            pickup_to_dropoff_distance,
+            default_to_pickup_distance
           });
         }}
         name={name}
