@@ -49,6 +49,7 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
                     location: item.item,
                     edit: true,
                   });
+                  ()=>{console.log('item: ', item, 'item.item: ',item.item )}
                 }}
               >
                 <Icon color="#ff8262" name="pencil" size={25}></Icon>
