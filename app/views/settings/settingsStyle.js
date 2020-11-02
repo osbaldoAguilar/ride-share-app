@@ -67,10 +67,7 @@ export default StyleSheet.create({
     fontSize: 13,
     color: '#475c67',
   },
-  bottomBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ff8262',
-  },
+
   buttonSection: {
     padding: 5,
     alignItems: 'flex-end',

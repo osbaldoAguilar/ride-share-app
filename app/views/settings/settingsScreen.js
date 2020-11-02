@@ -217,6 +217,7 @@ class Settings extends Component {
   };
 
   toggleEdit = () => {
+    this.props.navigation.navigate('DriverInformation');
     this.setState({
       editable: !this.state.editable,
     });
@@ -299,6 +300,7 @@ class Settings extends Component {
     });
   };
   handleActive() {
+    //make api call for active status
     this.setState({
       active: !this.state.active,
     });
@@ -520,10 +522,14 @@ class Settings extends Component {
                   </View>
                 </View>
                 <View style={styles.inputContainer}>
-                  <User name="user" size={30} color="#475c67" />
+                  <View style={{ flexDirection: 'row' }}>
+                    <User name="user" size={30} color="#475c67" />
+                    <Text>Name</Text>
+                  </View>
+
                   <View style={styles.userFirstLastName}>
                     <View style={{ paddingRight: 8 }}>
-                      <View style={styles.bottomBorder}>
+                      <View>
                         <TextInput
                           style={styles.input}
                           placeholder="First"
@@ -534,7 +540,7 @@ class Settings extends Component {
                       </View>
                     </View>
                     <View>
-                      <View style={styles.bottomBorder}>
+                      <View>
                         <TextInput
                           style={styles.input}
                           placeholder="Last"
@@ -547,8 +553,12 @@ class Settings extends Component {
                   </View>
                 </View>
                 <View style={styles.inputContainer}>
-                  <Email name="email-outline" size={30} color="#475c67" />
-                  <View style={styles.bottomBorder}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Email name="email-outline" size={30} color="#475c67" />
+                    <Text>Email</Text>
+                  </View>
+
+                  <View>
                     <TextInput
                       keyboardType="email-address"
                       style={styles.input}
@@ -562,8 +572,12 @@ class Settings extends Component {
                 </View>
 
                 <View style={styles.inputContainer}>
-                  <Phone name="phone" size={30} color="#475c67" />
-                  <View style={styles.bottomBorder}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <Phone name="phone" size={30} color="#475c67" />
+                    <Text>Phone</Text>
+                  </View>
+
+                  <View>
                     <TextInput
                       keyboardType="number-pad"
                       style={styles.input}
@@ -577,10 +591,17 @@ class Settings extends Component {
                   </View>
                 </View>
                 <View style={styles.inputContainer}>
-                  <Radius name="map-marker-radius" size={30} color="#475c67" />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Radius
+                      name="map-marker-radius"
+                      size={30}
+                      color="#475c67"
+                    />
 
-                  <View style={styles.bottomBorder}>
-                    <Text style={styles.radiusTitle}>Radius</Text>
+                    <Text>Radius</Text>
+                  </View>
+
+                  <View>
                     <TextInput
                       keyboardType="numeric"
                       style={styles.input}
@@ -607,43 +628,6 @@ class Settings extends Component {
                       Change Password
                     </Text>
                   </TouchableOpacity>
-                </View>
-              </View>
-
-              <View style={styles.section}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <View style={styles.rowContainer}>
-                    <View>
-                      <Text style={styles.inputTitle}>Active </Text>
-                      <Text style={styles.notificationDescription}>
-                        Turn off/on Active Status
-                      </Text>
-                    </View>
-                    <View style={styles.switchStyle}>
-                      <Switch
-                        disabled={!this.state.editable}
-                        onValueChange={this.handleActive}
-                        value={this.state.active}
-                      />
-                    </View>
-                  </View>
-                  <View style={[styles.rowContainer, { paddingTop: 15 }]}>
-                    <TouchableOpacity
-                      style={styles.logoutButton}
-                      onPress={
-                        this.state.editable ? this.saveEdit : this.handleLogout
-                      }
-                    >
-                      <Text style={styles.buttonTitle}>
-                        {this.state.editable ? 'Save' : 'Log out'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
                 </View>
               </View>
             </View>
@@ -693,13 +677,40 @@ class Settings extends Component {
                 />
               )}
             </View>
+
+            <View style={styles.section}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <View style={styles.rowContainer}>
+                  <View>
+                    <Text style={styles.inputTitle}>Active </Text>
+                    <Text style={styles.notificationDescription}>
+                      Turn off/on Active Status
+                    </Text>
+                  </View>
+                  <View style={styles.switchStyle}>
+                    <Switch
+                      onValueChange={this.handleActive}
+                      value={this.state.active}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View>
+                <TouchableOpacity onPress={this.navigateToCalendar}>
+                  <View>
+                    <Text>Availability</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </ScrollView>
         <View style={styles.footer}>
-          <CalendarButton
-            onPress={this.navigateToCalendar}
-            title="Availability"
-          />
+          <CalendarButton onPress={this.handleLogout} title="Log Out" />
         </View>
       </View>
     );
