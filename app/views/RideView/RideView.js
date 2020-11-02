@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { Avatar, Button, Badge } from 'react-native-elements';
-import openMap from 'react-native-open-maps';
+import createOpenLink from 'react-native-open-maps';
 import API from '../../api/api';
 import { InitOverviewCard, RideOverviewCard } from '../../components/Card';
 import BackHeader from '../../components/Header/BackHeader';
@@ -79,12 +79,21 @@ export default class RideView extends Component {
   handlePickUpDirections = () => {
     const { latitude, longitude, startLoc } = this.state;
     console.log('started local: ', startLoc);
-    const pickupAddress = startLoc.street || '';
-    console.log('pic add: ', pickupAddress);
-    openMap({
+    const pickupAddress =
+      startLoc.street + ' ' + startLoc.city + ' ' + startLoc.state;
+    console.log('pic add: ', pickupAddress.toString());
+    // openMap({
+    //   latitude,
+    //   longitude,
+    //   query: pickupAddress,
+    //   provider: 'google',
+    // });
+
+    createOpenLink({
       latitude,
       longitude,
       query: pickupAddress,
+      provider: 'google',
     });
     this.setState({
       isVisible: true,

@@ -27,6 +27,7 @@ import { VehicleCard, LocationCard } from '../../components/Card';
 import Animated from 'react-native-reanimated';
 
 import { SafeAreaView } from 'react-navigation';
+import api from '../../api/api';
 
 class Settings extends Component {
   _isMounted = false;
@@ -179,47 +180,52 @@ class Settings extends Component {
     });
   }
 
-  saveEdit = () => {
-    console.log('called api');
-    const driverData = {
-      organization_id: this.state.organization_id,
-      first_name: this.state.firstName,
-      last_name: this.state.lastName,
-      email: this.state.email,
-      phone: this.state.phoneNumber,
-      radius: this.state.radius,
-      is_active: this.state.active,
-      allowEmailNotification: this.state.allowEmailNotification,
-    };
+  // saveEdit = () => {
+  //   console.log('called api');
+  //   const driverData = {
+  //     organization_id: this.state.organization_id,
+  //     first_name: this.state.firstName,
+  //     last_name: this.state.lastName,
+  //     email: this.state.email,
+  //     phone: this.state.phoneNumber,
+  //     radius: this.state.radius,
+  //     is_active: this.state.active,
+  //     allowEmailNotification: this.state.allowEmailNotification,
+  //   };
 
-    let data = {
-      location: {
-        street: this.state.street,
-        city: this.state.city,
-        state: this.state.state_initials,
-        zip: this.state.zip_code,
-        notes: null,
-      },
-    };
+  //   let data = {
+  //     location: {
+  //       street: this.state.street,
+  //       city: this.state.city,
+  //       state: this.state.state_initials,
+  //       zip: this.state.zip_code,
+  //       notes: null,
+  //     },
+  //   };
 
-    AsyncStorage.getItem('token', (err, result) => {
-      const obj = JSON.parse(result);
-      const { token } = obj;
+  //   AsyncStorage.getItem('token', (err, result) => {
+  //     const obj = JSON.parse(result);
+  //     const { token } = obj;
 
-      API.updateSettingsDriver(driverData, token)
-        .then(result => {
-          this.setState({ editable: !this.state.editable });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  };
+  //     API.updateSettingsDriver(driverData, token)
+  //       .then(result => {
+  //         this.setState({ editable: !this.state.editable });
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //       });
+  //   });
+  // };
 
   toggleEdit = () => {
-    this.props.navigation.navigate('DriverInformation');
-    this.setState({
-      editable: !this.state.editable,
+    const { email, lastName, firstName, phoneNumber } = this.state;
+    this.props.navigation.navigate('DriverInformation', {
+      driverData: {
+        email: email,
+        lastName: lastName,
+        firstName: firstName,
+        phoneNumber: phoneNumber,
+      },
     });
   };
 
@@ -299,12 +305,17 @@ class Settings extends Component {
       insurance: text,
     });
   };
-  handleActive() {
+  handleActive = async () => {
     //make api call for active status
-    this.setState({
-      active: !this.state.active,
+
+    const token = await AsyncStorage.getItem('token');
+    const ParesedToken = JSON.parse(token);
+
+    this.setState({ active: !this.state.active }, () => {
+      console.log('active update', this.state.active);
+      API.updateDriverActiveStatus(this.state.active, ParesedToken.token);
     });
-  }
+  };
 
   handleEmailNotification() {
     this.setState({
@@ -337,77 +348,6 @@ class Settings extends Component {
     }
   };
 
-  // renderLocations = () => {
-  //   const { navigation } = this.props;
-  //   return (
-  //     <FlatList
-  //       data={this.state.locations}
-  //       renderItem={item => {
-  //         console.log('rendering flatlist', item);
-  //         return (
-  //           <View
-  //             style={{
-  //               padding: 5,
-  //               paddingLeft: 10,
-  //               paddingTop: 10,
-  //               flex: 1,
-  //               flexDirection: 'row',
-  //             }}
-  //           >
-  //             <Text style={{ fontSize: 16, color: '#475c67' }}>
-  //               {item.item.street}
-  //             </Text>
-  //             <Text style={{ fontSize: 16, color: '#475c67' }}>
-  //               , {item.item.city}
-  //             </Text>
-  //             <Text style={{ fontSize: 16, color: '#475c67' }}>
-  //               , {item.item.state}
-  //             </Text>
-  //             <Text style={{ fontSize: 16, color: '#475c67' }}>
-  //               {' '}
-  //               {item.item.zip}
-  //             </Text>
-  //             <View
-  //               style={{
-  //                 flexDirection: 'row',
-  //                 position: 'absolute',
-  //                 right: 0,
-  //                 paddingTop: 5,
-  //               }}
-  //             >
-  //               {item.item.default_location && (
-  //                 <View>
-  //                   <Icon color="#ff8262" name="check-bold" size={25}></Icon>
-  //                 </View>
-  //               )}
-  //               <View style={{ paddingLeft: 10 }}>
-  //                 <TouchableOpacity
-  //                   onPress={() => {
-  //                     console.log('pressed edit');
-  //                     navigation.navigate('LocationScreen', {
-  //                       location: item.item,
-  //                       edit: true,
-  //                     });
-  //                   }}
-  //                 >
-  //                   <Icon color="#ff8262" name="pencil" size={25}></Icon>
-  //                 </TouchableOpacity>
-  //               </View>
-  //               <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-  //                 <TouchableOpacity
-  //                   onPress={() => this.handleDeleteLocation(item.item.id)}
-  //                 >
-  //                   <Icon color="#ff8262" name="delete" size={25} />
-  //                 </TouchableOpacity>
-  //               </View>
-  //             </View>
-  //           </View>
-  //         );
-  //       }}
-  //       keyExtractor={item => item.id.toString()}
-  //     />
-  //   );
-  // };
   navigateToCalendar = () => {
     const { navigation } = this.props;
     navigation.navigate('AgendaView');
@@ -522,9 +462,9 @@ class Settings extends Component {
                   </View>
                 </View>
                 <View style={styles.inputContainer}>
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <User name="user" size={30} color="#475c67" />
-                    <Text>Name</Text>
+                    <Text style={styles.iconText}>Name</Text>
                   </View>
 
                   <View style={styles.userFirstLastName}>
@@ -553,9 +493,9 @@ class Settings extends Component {
                   </View>
                 </View>
                 <View style={styles.inputContainer}>
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Email name="email-outline" size={30} color="#475c67" />
-                    <Text>Email</Text>
+                    <Text style={styles.iconText}>Email</Text>
                   </View>
 
                   <View>
@@ -572,9 +512,9 @@ class Settings extends Component {
                 </View>
 
                 <View style={styles.inputContainer}>
-                  <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Phone name="phone" size={30} color="#475c67" />
-                    <Text>Phone</Text>
+                    <Text style={styles.iconText}>Phone</Text>
                   </View>
 
                   <View>
@@ -583,6 +523,7 @@ class Settings extends Component {
                       style={styles.input}
                       placeholder="999-999-9999"
                       dataDetectorTypes="phoneNumber"
+                      textContentType="telephoneNumber"
                       value={this.state.phoneNumber}
                       onChangeText={this.handlePhoneNumber}
                       editable={this.state.editable}
@@ -590,15 +531,15 @@ class Settings extends Component {
                     />
                   </View>
                 </View>
-                <View style={styles.inputContainer}>
-                  <View style={{ flexDirection: 'row' }}>
+                {/* <View style={styles.inputContainer}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Radius
                       name="map-marker-radius"
                       size={30}
                       color="#475c67"
                     />
 
-                    <Text>Radius</Text>
+                    <Text style={styles.iconText}>Radius</Text>
                   </View>
 
                   <View>
@@ -611,7 +552,7 @@ class Settings extends Component {
                       editable={this.state.editable}
                     />
                   </View>
-                </View>
+                </View> */}
                 <View style={styles.inputContainer}>
                   <TouchableOpacity
                     onPress={() =>
@@ -629,6 +570,38 @@ class Settings extends Component {
                     </Text>
                   </TouchableOpacity>
                 </View>
+              </View>
+            </View>
+
+            <View style={styles.section}>
+              <View style={[styles.rowContainer]}>
+                <View>
+                  <Text style={styles.inputTitle}>Active </Text>
+                  <Text style={styles.notificationDescription}>
+                    Turn off/on Active Status
+                  </Text>
+                </View>
+
+                <View style={styles.switchStyle}>
+                  <Switch
+                    onValueChange={this.handleActive}
+                    value={this.state.active}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  onPress={this.navigateToCalendar}
+                  style={{
+                    backgroundColor: '#475c67',
+                    borderRadius: 25,
+                    padding: 10,
+                    marginRight: 10,
+                  }}
+                >
+                  <Text style={{ color: 'white', fontSize: 16 }}>
+                    Availability
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -676,36 +649,6 @@ class Settings extends Component {
                   handleDeleteLocation={this.handleDeleteLocation}
                 />
               )}
-            </View>
-
-            <View style={styles.section}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}
-              >
-                <View style={styles.rowContainer}>
-                  <View>
-                    <Text style={styles.inputTitle}>Active </Text>
-                    <Text style={styles.notificationDescription}>
-                      Turn off/on Active Status
-                    </Text>
-                  </View>
-                  <View style={styles.switchStyle}>
-                    <Switch
-                      onValueChange={this.handleActive}
-                      value={this.state.active}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View>
-                <TouchableOpacity onPress={this.navigateToCalendar}>
-                  <View>
-                    <Text>Availability</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
         </ScrollView>
