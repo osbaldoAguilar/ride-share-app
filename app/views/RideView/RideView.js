@@ -74,14 +74,24 @@ export default class RideView extends Component {
         riderInfo: rider,
       });
     });
+
+    API.getLocations(token).then(response => {
+      const locations = response.locations;
+      this.setState({ locations }, () => {
+        console.log('state for locations inside rideview', this.state.locations);
+      });
+    });
   };
 
   handlePickUpDirections = () => {
-    const { latitude, longitude, startLoc } = this.state;
+    const { latitude, longitude, startLoc, locations  } = this.state;
     console.log('started local: ', startLoc);
     const pickupAddress = startLoc.street || '';
     console.log('pic add: ', pickupAddress);
     openMap({
+      // start:locations,
+      end: pickupAddress,
+      // destination: pickupAddress,
       latitude,
       longitude,
       query: pickupAddress,
@@ -131,6 +141,8 @@ export default class RideView extends Component {
     const dropOffAddress = endLoc.street || '';
     console.log('pic add: ', dropOffAddress);
     openMap({
+      end: dropOffAddress,
+      // destination: dropOffAddress,
       latitude,
       longitude,
       query: dropOffAddress,
