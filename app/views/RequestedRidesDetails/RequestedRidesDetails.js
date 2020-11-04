@@ -27,7 +27,7 @@ export default class RequestedRidesDetails extends Component<Props> {
     API.getRides(token)
       .then(result => {
         let ride_id = result.rides.rides.id;
-        console.log('ride id', ride_id);
+        console.log('ride id', result);
       })
       .catch(err => {
         console.log('request ride', err);
@@ -92,6 +92,8 @@ export default class RequestedRidesDetails extends Component<Props> {
     const { navigation } = this.props;
     const startLocation = navigation.getParam('startLocation');
     const endLocation = navigation.getParam('endLocation');
+    const default_to_pickup_distance=navigation.getParam('default_to_pickup_distance');
+    const pickup_to_dropoff_distance=navigation.getParam('pickup_to_dropoff_distance');
     const date2 = navigation.getParam('date');
     const date = new Date(date2);
     date.toString();
@@ -109,6 +111,8 @@ export default class RequestedRidesDetails extends Component<Props> {
           <View style={styles.profileContainer}>
             <Text numberOfLines={3} style={styles.nameText}>
               Picking up:
+           
+
             </Text>
             <Text numberOfLines={3} style={styles.nameText}>
               {this.state.firstName} {this.state.lastName}
@@ -121,6 +125,8 @@ export default class RequestedRidesDetails extends Component<Props> {
               dropoffAddress={endLocation.join(', ')}
               date={date}
               note={reason}
+              pickup_to_dropoff_distance={pickup_to_dropoff_distance}
+              default_to_pickup_distance={default_to_pickup_distance}
             />
           </View>
         </ScrollView>

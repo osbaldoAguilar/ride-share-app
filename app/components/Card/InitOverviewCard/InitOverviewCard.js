@@ -20,7 +20,27 @@ const InitOverviewCard = ({
   default_to_pickup_distance,
 }) => (
   <Block>
+      
     <Block style={[styles.cardContainer, styles.shadow]}>
+
+    <Text style={{textAlign:"center" , fontWeight:"bold"}}>Pickup/Dropoff</Text>
+    <Block row space="between">
+    <Badge
+          color="rgba(30,170,112,0.2)"
+          size={14}
+          style={{ marginLeft:80}}
+        >
+          <Badge color="#1EAA70" size={8} />
+        </Badge>
+        <Badge
+          color="rgba(30,170,112,0.2)"
+          size={14}
+          style={{ marginRight:90}}
+        >
+          <Badge color="#FF4957" size={8} />
+        </Badge>
+        </Block>
+        
       <Block row space="between">
         <Text style={styles.date}>
           {moment.parseZone(date).format('MMM D')}
@@ -30,7 +50,7 @@ const InitOverviewCard = ({
           'data from date MMM D: ',
           moment.parseZone(date).format('MMM D')
         )}
-        <Text style={styles.date}>pick up by</Text>
+       
         {console.log(
           'data from date hh:mm ',
           moment.parseZone(date).format('h:mm A')
@@ -38,27 +58,41 @@ const InitOverviewCard = ({
         <Text style={styles.date}>{moment(date).format('h:mm A')}</Text>
       </Block>
       <Block row center>
-        <Badge
-          color="rgba(30,170,112,0.2)"
-          size={14}
-          style={{ marginRight: 8 }}
-        >
-          <Badge color="#1EAA70" size={8} />
-        </Badge>
+      <Badge color="#1EAA70" size={5.5} style={{ marginLeft: 1}} />
+      <Icon
+                name="home"
+                size={24}
+                color="#475c67"
+                type="materialIcons"
+              />
         <TouchableOpacity>
           <Text numberOfLines={1} style={styles.location}>
             {pickupAddress}
           </Text>
         </TouchableOpacity>
       </Block>
+     
+     
+            <Block row center style={{ marginLeft:6}} >
+            
+      <Icon 
+                name="directions-car"
+                size={24}
+                color="#475c67"
+                type="materialIcons"
+                
+               
+              />
+              </Block>
+           
       <Block row center>
-        <Badge
-          color="rgba(255, 71, 87, 0.2)"
-          size={14}
-          style={{ marginRight: 8 }}
-        >
-          <Badge color="#FF4957" size={8} />
-        </Badge>
+      <Badge color="#FF4957" size={5.5} style={{ marginLeft: 1}} />
+      <Icon
+                name="home"
+                size={24}
+                color="#475c67"
+                type="materialIcons"
+              />
         <TouchableOpacity>
           <Text numberOfLines={1} style={styles.location}>
             {dropoffAddress}
@@ -87,6 +121,7 @@ const InitOverviewCard = ({
               Approximate distances between points
             </Text>
             <Block row center style={{ paddingVertical: 4 }}>
+              
               <Icon
                 name="directions-car"
                 size={24}
@@ -150,13 +185,18 @@ const InitOverviewCard = ({
               <Text spacing={0.5} style={styles.location}>
                 {dropoffAddress}
               </Text>
+       
             </Block>
           </Block>
+          
         ) : (
-          <Text style={styles.noteText}>
-            Approximate Distances will be displayed when you have accepted the
-            Ride
-          </Text>
+          <Text spacing={0.5} style={(styles.location, styles.distance)}>
+          {pickup_to_dropoff_distance}Approximate distance will be displayed after accepting the ride
+        </Text>
+              
+         
+          
+          
         )}
       </Block>
     </View>

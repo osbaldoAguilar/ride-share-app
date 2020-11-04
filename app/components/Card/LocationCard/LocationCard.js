@@ -28,6 +28,12 @@ const LocationCard = ({ locations, navigation, handleDeleteLocation }) => (
               {item.item.street}, {item.item.city}, {item.item.state},{' '}
               {item.item.zip}
             </Text>
+            <Text
+              ellipsizeMode= "tail"
+              numberOfLines={1}
+              style={{fontsize :16 ,color:'#475c67',width: 20}}>
+            {''} {item.item.zip}
+              </Text>
           </View>
 
           <View
