@@ -21,7 +21,7 @@ class RegisterDriverForm extends React.Component {
       orgs: [],
       orgsNames: [],
       orgNum: 1,
-      radius: 20,
+      radius: 100, //currently defaulted to 100 miles
       radiusOptions: ['10 Miles', '20 Miles', '30 Miles'],
       error: '',
       orgModal: false,

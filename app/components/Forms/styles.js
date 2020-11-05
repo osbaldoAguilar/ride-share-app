@@ -119,7 +119,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   sectionTitle: {
-    paddingLeft: 15,
+    paddingLeft: 5,
     paddingRight: 15,
     paddingTop: 5,
     paddingBottom: 5,

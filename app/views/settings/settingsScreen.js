@@ -97,6 +97,30 @@ class Settings extends Component {
           vehicles,
         });
       });
+
+      API.getSettingInfo(token.token).then(res => {
+        const settingInfo = res;
+        console.log(
+          'settingsInfo',
+          settingInfo.driver.phone.replace(
+            /^[2-9]d{2}-d{3}-d{4}$/,
+            settingInfo.driver.phone
+          )
+        );
+
+        this.setState({
+          firstName: settingInfo.driver.first_name,
+          lastName: settingInfo.driver.last_name,
+          email: settingInfo.driver.email,
+          phoneNumber: settingInfo.driver.phone.replace(
+            /^[2-9]d{2}-d{3}-d{4}$/,
+            settingInfo.driver.phone
+          ),
+          radius: JSON.stringify(settingInfo.driver.radius),
+          active: settingInfo.driver.is_active,
+          organization_id: settingInfo.driver.organization_id,
+        });
+      });
     }
   };
 
@@ -111,13 +135,19 @@ class Settings extends Component {
       API.getSettingInfo(tokenValue)
         .then(res => {
           const settingInfo = res;
-          console.log('settingsInfo', settingInfo);
+          console.log(
+            'settingsInfoPhone',
+            settingInfo.driver.phone.replace(/^[2-9]d{2}-d{3}-d{4}$/)
+          );
           if (this._isMounted) {
             this.setState({
               firstName: settingInfo.driver.first_name,
               lastName: settingInfo.driver.last_name,
               email: settingInfo.driver.email,
-              phoneNumber: settingInfo.driver.phone,
+              phoneNumber: settingInfo.driver.phone.replace(
+                /(\d{3})(\d{3})(\d{4})/,
+                '($1)$2-$3'
+              ),
               radius: JSON.stringify(settingInfo.driver.radius),
               active: settingInfo.driver.is_active,
               organization_id: settingInfo.driver.organization_id,
@@ -224,7 +254,7 @@ class Settings extends Component {
         email: email,
         lastName: lastName,
         firstName: firstName,
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumber.replace(/[^\d]/g, ''),
       },
     });
   };

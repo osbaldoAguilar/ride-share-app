@@ -61,7 +61,7 @@ class DriverInformation extends Component {
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const driverData = {
       first_name: this.state.firstName,
       last_name: this.state.lastName,
@@ -69,11 +69,16 @@ class DriverInformation extends Component {
       phone: this.state.phoneNumber,
     };
 
-    AsyncStorage.getItem('token', (err, result) => {
-      const obj = JSON.parse(result);
-      const { token } = obj;
+    let token = await AsyncStorage.getItem('token');
+    console.log('token from storage', JSON.parse(token));
+    token = JSON.parse(token);
 
-      API.updateSettingsDriver(driverData, token);
+    API.updateSettingsDriver(driverData, token.token).then(res => {
+      console.log('api update res', res);
+
+      const settingInfo = res;
+      console.log('settingsInfo', settingInfo);
+      this.props.navigation.navigate('Settings', { updated: true });
     });
   };
 
@@ -88,7 +93,7 @@ class DriverInformation extends Component {
 
         <View style={styles.section}>
           <View style={styles.sectionTitleContainer}>
-            <Text style={styles.sectionTitle} />
+            <Text style={styles.sectionTitle}>Update Information</Text>
           </View>
         </View>
 
