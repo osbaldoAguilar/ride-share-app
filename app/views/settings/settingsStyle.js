@@ -40,6 +40,8 @@ export default StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     paddingTop: 5,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   inputTitle: {
     padding: 5,
@@ -52,8 +54,7 @@ export default StyleSheet.create({
     paddingLeft: 5,
   },
   switchStyle: {
-    paddingTop: 15,
-    paddingLeft: 25,
+    paddingLeft: 5,
   },
   input: {
     fontSize: 20,
@@ -67,10 +68,7 @@ export default StyleSheet.create({
     fontSize: 13,
     color: '#475c67',
   },
-  bottomBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ff8262',
-  },
+
   buttonSection: {
     padding: 5,
     alignItems: 'flex-end',
@@ -106,5 +104,11 @@ export default StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     alignItems: 'center',
+  },
+  iconText: {
+    fontSize: 14,
+    paddingLeft: 5,
+
+    color: '#475c67',
   },
 });

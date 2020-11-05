@@ -9,6 +9,7 @@ import {
   AuthLoadingScreen,
   RideView,
   DriverScheduleView,
+  DriverInformation,
   RequestedRidesDetails,
   Settings,
   Register,
@@ -75,6 +76,12 @@ const MainViewStack = createStackNavigator(
           backgroundColor: '#1EAA70',
         },
         headerTintColor: '#fff',
+      },
+    },
+    DriverInformation: {
+      screen: DriverInformation,
+      navigationOptions: {
+        header: () => null,
       },
     },
     RequestedRidesDetails: {

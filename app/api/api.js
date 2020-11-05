@@ -226,6 +226,25 @@ export default {
       headers: { token },
     });
   },
+
+  updateDriverActiveStatus(active, token) {
+    console.log('active', active);
+    const driverData = {
+      driver: {
+        is_active: active,
+      },
+    };
+
+    console.log('is actice', driverData);
+
+    return apiWrapper({
+      path: SETTINGS,
+      headers: { token },
+      body: driverData,
+      method: 'PUT',
+    });
+  },
+
   updateSettingsDriver(data, token) {
     const driverData = {
       driver: {

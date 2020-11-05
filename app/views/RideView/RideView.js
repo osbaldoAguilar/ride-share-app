@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { Avatar, Button, Badge } from 'react-native-elements';
-import openMap from 'react-native-open-maps';
+import createOpenLink from 'react-native-open-maps';
 import API from '../../api/api';
 import { InitOverviewCard, RideOverviewCard } from '../../components/Card';
 import BackHeader from '../../components/Header/BackHeader';
@@ -95,6 +95,7 @@ export default class RideView extends Component {
       latitude,
       longitude,
       query: pickupAddress,
+      provider: 'google',
     });
     this.setState({
       isVisible: true,
