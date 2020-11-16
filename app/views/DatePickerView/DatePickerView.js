@@ -68,13 +68,13 @@ const DatePickerView = ({ setDate, mode, title, dateProp, placeholder }) => {
         style={{
           marginTop: 5,
           textAlign: 'center',
-          borderBottomColor: 'grey',
+          borderBottomColor: 'black',
           borderBottomWidth: StyleSheet.hairlineWidth,
         }}
       >
         <Text
           style={{
-            color: 'grey',
+            color: 'black',
             fontSize: 18,
           }}
         >

@@ -8,6 +8,7 @@ import API from '../../api/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 import DatePickerView from '../../views/DatePickerView/DatePickerView';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class RegisterVehicleForm extends React.Component {
   constructor(props) {
@@ -150,6 +151,7 @@ class RegisterVehicleForm extends React.Component {
         car_plate: this.state.car_plate,
         seat_belt_num: this.state.seat_belt_num,
         insurance_provider: this.state.insurance_provider,
+        todays_date: moment().format('ll'),
         insurance_start: moment(this.state.insurStartDate).format('YYYY-MM-DD'),
         insurance_stop: moment(this.state.insurEndDate).format('YYYY-MM-DD'),
       },
@@ -302,7 +304,7 @@ class RegisterVehicleForm extends React.Component {
             inputStyle={styles.saeTextAlt}
           />
 
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
               <Text style={styles.sectionTitle}>
                 Insurance Coverage Start Date:{' '}
@@ -318,24 +320,33 @@ class RegisterVehicleForm extends React.Component {
               placeholder="Start Date"
               mode="date"
             />
-          </View>
+          </View> */}
 
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <View style={styles.sectionTitleContainer}>
-              <Text style={styles.sectionTitle}>
-                Insurance Coverage End Date:{' '}
-              </Text>
+              <Text style={styles.sectionTitle}>Insured until </Text>
             </View>
-          </View>
-
+          </View> */}
+          <Text size={30} style={styles.labelStyleAlt}>
+            Insured Until:
+          </Text>
           <View style={{ marginHorizontal: 16, paddingBottom: 5 }}>
-            <DatePickerView
-              dateProp={insurance_stop}
-              setDate={this.setEndDate}
-              title="End Date"
-              placeholder="End Date"
-              mode="date"
-            />
+            <View
+              style={{ flexDirection: 'row', paddingTop: 20, paddingLeft: 15 }}
+            >
+              <View style={{ paddingRight: 15 }}>
+                <Icon name="calendar-blank-outline" size={30} color="#475c67" />
+              </View>
+              {this.state.todays_date !== insurance_stop && (
+                <DatePickerView
+                  dateProp={insurance_stop}
+                  setDate={this.setEndDate}
+                  title="End Date"
+                  placeholder="Date when coverage ends"
+                  mode="date"
+                />
+              )}
+            </View>
           </View>
 
           {this.state.error !== '' && (
@@ -345,7 +356,7 @@ class RegisterVehicleForm extends React.Component {
           )}
           <Block style={styles.footer}>
             <CalendarButton
-              title="Continue"
+              title="Save"
               onPress={() => this.handleUserSubmit(userEntries)}
             />
           </Block>
