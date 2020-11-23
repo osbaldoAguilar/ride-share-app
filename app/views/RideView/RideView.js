@@ -7,6 +7,7 @@ import {
   Modal,
   ScrollView,
   TouchableOpacity as TouchableOpacity2,
+  BackHandler,
 } from 'react-native';
 
 import { Avatar, Button, Badge } from 'react-native-elements';
@@ -38,8 +39,29 @@ export default class RideView extends Component {
   }
   componentDidMount = () => {
     this.requestRider();
+    this.backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.backAction
+    );
   };
 
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
+  backAction = () => {
+    const { textValue } = this.state;
+
+    if (textValue !== 'Go to pickup') {
+      Alert.alert('Wait', 'Going back is not allowed once a ride has started', [
+        {
+          text: 'Okay',
+          onPress: () => null,
+        },
+      ]);
+      return true;
+    } else return false;
+  };
   requestRider = () => {
     const { navigation } = this.props;
     const token = navigation.getParam('token');
@@ -78,13 +100,16 @@ export default class RideView extends Component {
     API.getLocations(token).then(response => {
       const locations = response.locations;
       this.setState({ locations }, () => {
-        console.log('state for locations inside rideview', this.state.locations);
+        console.log(
+          'state for locations inside rideview',
+          this.state.locations
+        );
       });
     });
   };
 
   handlePickUpDirections = () => {
-    const { latitude, longitude, startLoc, locations  } = this.state;
+    const { latitude, longitude, startLoc, locations } = this.state;
     console.log('started local: ', startLoc);
     const pickupAddress = startLoc.street || '';
     console.log('pic add: ', pickupAddress);
