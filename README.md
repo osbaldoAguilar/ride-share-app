@@ -6,7 +6,7 @@ Cross-platform mobile app for Android and iOS written with React Native.
 ## Prerequisites
 
 - Cocoapods
-- Xcode
+- Xcode >= 11.6
 - Android Studio
 - Java JDK 14
 
