@@ -52,4 +52,6 @@ yarn ios
 yarn android
 ```
 
+If `yarn ios` doesn't work, you can try opening up `ios/RideShareApp.xcworkspace` in Xcode and running from there (making sure that `iPhone 11` is selected as the device being simulated)
+
 Here are the react native instructions to [run on a device](https://facebook.github.io/react-native/docs/running-on-device).
